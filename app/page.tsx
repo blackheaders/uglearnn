@@ -1,8 +1,10 @@
+"use client";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Home() {
+  
   return (
     <div className="bg-[#F7F7F6]">
       <section className="container mx-auto px-4 py-16">

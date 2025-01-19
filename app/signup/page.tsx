@@ -1,12 +1,15 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "@/components/ui/use-toast"
 
 export default function SignupPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,14 +27,48 @@ export default function SignupPage() {
     setFormData(prevState => ({ ...prevState, university: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Signup submitted:", formData)
-    toast({
-      title: "Signup Successful",
-      description: "Welcome to Uglearn! You can now log in to your account.",
+    
+    const res = await fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     })
-    setFormData({ name: "", email: "", phone: "", password: "", university: "" })
+  
+    const data = await res.json()
+  
+    if (res.ok) {
+      toast({
+        title: "Signup Successful",
+        description: "Logging you in...",
+      })
+      
+      // Automatically log in after signup
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      })
+
+      if (result?.error) {
+        toast({
+          title: "Login Failed",
+          description: result.error,
+          variant: "destructive",
+        })
+      } else {
+        router.push("/") // Redirect to a protected page
+      }
+
+      setFormData({ name: "", email: "", phone: "", password: "", university: "" })
+    } else {
+      toast({
+        title: "Signup Failed",
+        description: data.message,
+        variant: "destructive",
+      })
+    }
   }
 
   return (
@@ -102,4 +139,3 @@ export default function SignupPage() {
     </div>
   )
 }
-
