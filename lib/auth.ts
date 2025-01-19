@@ -19,6 +19,7 @@ export interface session extends Session {
 
 interface token extends JWT {
   uid: string;
+  role: string;
   jwtToken: string;
 }
 
@@ -105,6 +106,11 @@ export const authOptions = {
       if (user) {
         newToken.uid = user.id;
         newToken.jwtToken = (user as user).token;
+        newToken.role = process.env.ADMINS?.split(',').includes(
+          user?.email ?? '',
+        )
+          ? 'admin'
+          : 'user';
       }
       return newToken;
     },

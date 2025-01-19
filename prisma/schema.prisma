@@ -34,8 +34,6 @@ model Session {
   user         User     @relation(fields: [userId], references: [id])
 }
 
-
-
 model VerificationRequest {
   id         String   @id @default(cuid()) @map("_id")
   identifier String
@@ -45,4 +43,17 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+}
+
+model Course {
+  id          String   @id @default(cuid()) @map("_id")
+  title       String
+  description String
+  imageUrl    String
+  videoUrl    String?
+  university  String
+  program     String
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
