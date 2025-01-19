@@ -317,6 +317,9 @@ const Signin = () => {
           >
             Login
           </Button>
+          <p className="text-center text-sm text-gray-600">
+            Don't have an account? <a href="/signup" className="text-blue-600 hover:underline">Create an account</a>
+          </p>
         </div>
       </motion.div>
       <div className="absolute -bottom-[16rem] -z-[20] size-[24rem] overflow-hidden rounded-full bg-gradient-to-t from-blue-400 to-blue-700 blur-[16em]" />

@@ -1,7 +1,12 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+"use client";
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const { data: session } = useSession(); 
+  
   return (
     <header className="bg-white shadow-sm">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -25,11 +30,33 @@ export default function Header() {
             Contact
           </Link>
         </div>
-        <Button variant="outline" className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">
-          Login
-        </Button>
+
+        {/* Conditionally render based on the session */}
+        {session ? (
+          <div className="flex items-center space-x-4">
+            <span className="text-[#81674F]">Hello, {session?.user?.name}</span>
+            <Button
+              variant="outline"
+              className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]"
+              onClick={() => signOut()}
+            >
+              Logout
+            </Button>
+          </div>
+        ) : (
+          <>
+             
+              <Link href="/signin">
+                <Button
+                  variant="outline"
+                  className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]"
+                >
+                  Login
+                </Button>
+              </Link>
+          </>
+        )}
       </nav>
     </header>
-  )
-}
-
+  );
+} 
