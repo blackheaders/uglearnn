@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 export default function Home() {
   
   return (
-    <div className="bg-[#F7F7F6]">
+    <div className=" bg-gradient-to-b from-[#ffff] to-[#F6CFBE]">
       <section className="container mx-auto px-4 py-16">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-[#6C462E] mb-4">Find and Purchase Courses for Your University</h1>
