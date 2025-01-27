@@ -49,6 +49,7 @@ const courseSchema = z.object({
   price: z.number().min(0, {
     message: "Price must be at least 0.",
   }),
+  gdlink: z.string().optional(),
 });
 
 export default function Courses() {
@@ -99,7 +100,7 @@ export default function Courses() {
     <div className="wrapper my-16 flex flex-col p-10 gap-4">
       <section className="my-4 flex items-center gap-2 rounded-lg border-2 bg-primary/5 p-4">
         <Cuboid size={18} />
-        <Link href="/admin/courses" className="text-lg font-semibold">
+        <Link href="/admin/content" className="text-lg font-semibold">
           <h2 className="text-md font-bold">View Courses</h2>
         </Link>
       </section>
@@ -195,7 +196,7 @@ export default function Courses() {
                             </FormItem>
                           )}
                         />
-                        
+                      
                     
                         <FormField
                           control={form.control}
@@ -274,6 +275,23 @@ export default function Courses() {
                                   Upload
                                 </Button>
                               </div>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="gdlink"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Gdlink (If you want to add direct link) (optional)</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="h-12 px-3"
+                                  placeholder="Enter the Gdlink of course"
+                                  {...field}
+                                />
+                              </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}

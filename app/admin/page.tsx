@@ -78,33 +78,26 @@ export default function AdminPage() {
       description: 'Browse and manage existing content',
       exploreText: 'Discover more!',
     },
+    // {
+    //   href: '/admin/discord',
+    //   icon: DiscordIcon,
+    //   title: 'Discord Configuration',
+    //   description: 'Set up and manage Discord integration',
+    //   exploreText: 'Configure now!',
+    // },
     {
-      href: '/admin/discord',
-      icon: DiscordIcon,
-      title: 'Discord Configuration',
-      description: 'Set up and manage Discord integration',
-      exploreText: 'Configure now!',
-    },
-    {
-      href: '/admin/comment',
+      href: '/admin/will-do',
       icon: MessageCircle,
       title: 'Comments Management',
       description: 'Moderate and manage user comments',
       exploreText: 'Manage comments!',
     },
     {
-      href: '/admin/user',
+      href: '/admin/will-do',
       icon: Users,
       title: 'User Management',
       description: 'Manage user accounts and permissions',
       exploreText: 'Manage users!',
-    },
-    {
-      href: '/admin/userflags',
-      icon: Flag,
-      title: 'User Flags',
-      description: 'Review and handle user flags and reports',
-      exploreText: 'Check flags!',
     },
   ];
 
