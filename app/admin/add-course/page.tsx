@@ -99,7 +99,7 @@ export default function Courses() {
     <div className="wrapper my-16 flex flex-col p-10 gap-4">
       <section className="my-4 flex items-center gap-2 rounded-lg border-2 bg-primary/5 p-4">
         <Cuboid size={18} />
-        <Link href="/admin/courses" className="text-lg font-semibold">
+        <Link href="/admin/content" className="text-lg font-semibold">
           <h2 className="text-md font-bold">View Courses</h2>
         </Link>
       </section>
