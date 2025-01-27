@@ -217,7 +217,7 @@ importers:
         specifier: ^22
         version: 22.10.7
       '@types/react':
-        specifier: ^18
+        specifier: ^18.3.18
         version: 18.3.18
       '@types/react-dom':
         specifier: ^18
@@ -229,7 +229,7 @@ importers:
         specifier: ^3.4.17
         version: 3.4.17
       typescript:
-        specifier: ^5
+        specifier: ^5.7.3
         version: 5.7.3
 
 packages:

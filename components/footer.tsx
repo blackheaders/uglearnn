@@ -20,12 +20,12 @@ export default function Footer() {
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
-            <p>Email: info@uglearn.com</p>
-            <p>Phone: +1 234 567 8900</p>
+            <p>Email: hellouglearn@gmail.com</p>
+            <p>Phone: +91 8368505428</p>
           </div>
         </div>
         <div className="mt-8 text-center">
-          <p>&copy; 2023 Uglearn. All rights reserved.</p>
+          <p>&copy; 2025 Uglearn. All rights reserved.</p>
         </div>
       </div>
     </footer>
