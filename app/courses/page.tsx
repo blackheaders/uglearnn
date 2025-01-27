@@ -7,30 +7,33 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Course } from "@/types/types"
+import { Input } from "@/components/ui/input"
 
 const MotionCard = motion(Card)
 
 export default function CoursesPage() {
   const [selectedUniversity, setSelectedUniversity] = useState<string | undefined>()
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>()
-  const[courses,setCourses] = useState<Course[]>([])
+  const [courses, setCourses] = useState<Course[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
 
   const filteredCourses = courses.filter(course => 
     (!selectedUniversity || course.university === selectedUniversity) &&
-    (!selectedCategory || course.program === selectedCategory)
+    (!selectedCategory || course.program === selectedCategory) &&
+    (course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     course.description.toLowerCase().includes(searchQuery.toLowerCase()))
   )
-8+9
-  useEffect(()=> {
+
+  useEffect(() => {
     fetch('http://localhost:3000/api/courses')
     .then(res => res.json())
     .then(data => {
       setCourses(data)
     })
-    
     .catch(error => {
       console.error('Error fetching courses:', error)
     })
-  },[])
+  }, [])
 
   return (
     <motion.div 
@@ -39,7 +42,16 @@ export default function CoursesPage() {
       transition={{ duration: 0.5 }}
       className="container mx-auto px-4 py-8"
     >
-      <h1 className="text-3xl font-bold text-[#6C462E] mb-8">Available Courses</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-[#6C462E]">Available Courses</h1>
+        <Input
+          type="search"
+          placeholder="Search courses..."
+          className="w-[300px]"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
       
       <div className="mb-8 flex flex-col md:flex-row gap-4">
         <Select onValueChange={setSelectedUniversity}>
@@ -62,7 +74,8 @@ export default function CoursesPage() {
               <SelectItem key={program} value={program}>{program}</SelectItem>
             ))}
           </SelectContent>
-        </Select>      </div>
+        </Select>
+      </div>
 
       <motion.div 
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -94,7 +107,7 @@ export default function CoursesPage() {
             </CardHeader>
             <CardContent>
               {course.videoUrl ? (
-                <video className="w-full h-40 object-cover mb-4" controls>
+                <video className="w-full h-40 object-cover mb-4" autoPlay loop muted>
                   <source src={course.videoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
@@ -112,17 +125,14 @@ export default function CoursesPage() {
                   <span className="text-lg font-bold">Rs. {course.price}</span>
                 )
               }
-              {/* <Link href={`/courses/${course.id}`}>
-                <Button className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">View Course</Button>
-              </Link> */}
-              {course.gdlink ?(
+              {course.gdlink ? (
                 <Link href={`${course.gdlink}`}>
-                  <Button className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">View Course</Button>
+                  <Button className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">Drive Course</Button>
                 </Link>
               ) : (
                 <Link href={`/courses/${course.id}`}>
-                <Button className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">View Course</Button>
-              </Link>
+                  <Button className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">View Course</Button>
+                </Link>
               )}
             </CardFooter>
           </MotionCard>

@@ -51,6 +51,7 @@ model Course {
   description String
   imageUrl    String
   videoUrl    String?
+  gdlink      String?
   university  String
   program     String
   price       Float

@@ -72,6 +72,7 @@ export default function Courses() {
       university: "",
       videoUrl: "",
       price: 0,
+      gdlink: "",
     },
   });
 
@@ -87,7 +88,7 @@ export default function Courses() {
     try {
       await axios.post("/api/admin/course", data);
       toast("course succesfully created");
-      router.push("/");
+      router.push("/admin");
     } catch (error: any) {
       console.log(error);
       toast(error.message);

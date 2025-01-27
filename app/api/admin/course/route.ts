@@ -13,6 +13,7 @@ const requestBodySchema = z.object({
   program: z.string().min(2, { message: 'Program name must be at least 2 characters long.' }),
   price: z.number().min(0, { message: 'Price must be a positive number.' }),  // Ensure price is a positive number
   videoUrl: z.string().optional(),  // Video URL is optional
+  gdlink: z.string().optional(),  // Gdlink is optional
 });
 
 export async function POST(req: NextRequest) {
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
     program,
     price,
     videoUrl,
+    gdlink,
   } = parseResult.data;
 
   // Create a new course in the database
@@ -47,6 +49,8 @@ export async function POST(req: NextRequest) {
       program,
       price: Number(price) || 0,
       videoUrl,
+      gdlink,
+      // Remove the gdlink property if it's not part of the Course model
     },
   });
 
