@@ -13,18 +13,20 @@ const courses = [
     title: "Management Principles",
     description: "Learn the fundamentals of management and leadership",
     price: 99.99,
-    university: "Example University",
+    university: "Galgotias University",
     category: "BBA",
     videoUrl: "https://example.com/management-principles-preview.mp4",
+    gdlink:"https://github.com/Khushwant-Singh1"
   },
   {
     id: 2,
     title: "Data Structures and Algorithms",
     description: "Master the core concepts of computer science",
     price: 129.99,
-    university: "Tech Institute",
+    university: "Galgotias University",
     category: "BTech",
     videoUrl: "https://example.com/data-structures-preview.mp4",
+    gdlink:"https://github.com/Khushwant-Singh1"
   },
   // Add more courses here
 ]
@@ -55,7 +57,7 @@ export default function CoursesPage() {
             <SelectValue placeholder="Select University" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Example University">Example University</SelectItem>
+            <SelectItem value="Galgotias University">Galgotias University</SelectItem>
             <SelectItem value="Tech Institute">Tech Institute</SelectItem>
           </SelectContent>
         </Select>
@@ -108,9 +110,13 @@ export default function CoursesPage() {
             </CardContent>
             <CardFooter className="flex justify-between items-center">
               <span className="text-lg font-bold">${course.price}</span>
-              <Link href={`/courses/${course.id}`}>
+              {/* <Link href={`/courses/${course.id}`}>
                 <Button className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">View Course</Button>
+              </Link> */}
+              <Link href={`${course.gdlink}`}>
+              <Button className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">Ete Sloution Click Here</Button>
               </Link>
+              
             </CardFooter>
           </MotionCard>
         ))}
