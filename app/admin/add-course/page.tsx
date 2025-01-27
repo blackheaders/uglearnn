@@ -49,6 +49,7 @@ const courseSchema = z.object({
   price: z.number().min(0, {
     message: "Price must be at least 0.",
   }),
+  gdlink: z.string().optional(),
 });
 
 export default function Courses() {
@@ -195,7 +196,7 @@ export default function Courses() {
                             </FormItem>
                           )}
                         />
-                        
+                      
                     
                         <FormField
                           control={form.control}
@@ -274,6 +275,23 @@ export default function Courses() {
                                   Upload
                                 </Button>
                               </div>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="gdlink"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Gdlink (If you want to add direct link) (optional)</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="h-12 px-3"
+                                  placeholder="Enter the Gdlink of course"
+                                  {...field}
+                                />
+                              </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
