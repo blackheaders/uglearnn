@@ -25,7 +25,7 @@ export default function CoursesPage() {
   )
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/courses')
+    fetch('/api/courses')
     .then(res => res.json())
     .then(data => {
       setCourses(data)
