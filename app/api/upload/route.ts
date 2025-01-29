@@ -16,21 +16,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
+    // Convert Blob to Buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const uploadResult = await new Promise((resolve, reject) => {
-      cloudinary.v2.uploader.upload_stream(
-        { resource_type: "auto", folder: "uploads" },
+
+    // Upload to Cloudinary using a promise wrapper
+    const uploadResult = await new Promise<cloudinary.UploadApiResponse>((resolve, reject) => {
+      const uploadStream = cloudinary.v2.uploader.upload_stream(
+        { resource_type: "auto", folder: "uploads",timeout: 600000 },
         (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
+          if (error) {
+            console.error("Cloudinary Upload Error:", error);
+            reject(error);
+          } else {
+            resolve(result!);
+          }
         }
-      ).end(buffer);
+      );
+
+      uploadStream.end(buffer);
     });
 
-    return NextResponse.json({ url: (uploadResult as any).secure_url });
+    return NextResponse.json({ url: uploadResult.secure_url });
   } catch (error) {
-    console.error("Upload error:", error);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    console.error("Unexpected Upload Error:", error);
+    return NextResponse.json({ error: "Upload failed, please try again." }, { status: 500 });
   }
 }

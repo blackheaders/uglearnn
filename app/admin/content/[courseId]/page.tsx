@@ -3,6 +3,7 @@
 // import { AdminCourseContent } from '@/components/admin/CourseContent';
 // import findContentById from '@/lib/find-content-by-id';
 
+import { AddContent } from "@/components/admin/AddContent";
 import { getCourse } from "@/db/courses";
 
 export default async function UpdateCourseContent({
@@ -42,18 +43,19 @@ export default async function UpdateCourseContent({
 //   }
 
   return (
-    <main className="wrapper flex max-w-screen-xl m-10 flex-col gap-28">
+    <main className="wrapper flex max-w-screen-xl m-10 flex-col gap-14">
       <div className="flex w-full flex-col justify-between gap-2 rounded-lg border-2 bg-primary/5 p-4">
         <h1 className="text-2xl font-bold md:text-4xl">Content</h1>
         <p className="text-lg capitalize">{course?.title || ''}</p>
       </div>
 
-      {/* <AddContent
+      <AddContent
         rest={rest}
-        courseId={parseInt(courseId, 10)}
+        courseId={courseId}
         parentContentId={parseFloat(rest[rest.length - 1])}
-        courseTitle={course.title}
-      /> */}
+        courseTitle={course?.title || ''}
+        gdlink={course?.gdlink}
+      />
       {/* <AdminCourseContent
         rest={rest}
         // @ts-ignore
