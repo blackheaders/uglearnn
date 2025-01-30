@@ -18,7 +18,6 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Login submitted:", formData)
     toast({
       title: "Login Successful",
       description: "Welcome back to Uglearn!",

@@ -5,6 +5,7 @@
 // import { UpdateVideoClient } from '@/components/admin/UpdateVideoClient';
 
 import { AddContent } from "@/components/admin/AddContent";
+import { AdminCourseContent } from "@/components/admin/AdminCourseContent";
 import { findContentById, getCourse, getFullContent } from "@/db/courses";
 
 export default async function UpdateCourseContent({
@@ -66,17 +67,17 @@ export default async function UpdateCourseContent({
         parentContentId={rest[rest.length - 1]}
       />
 
-      {/* <AdminCourseContent
+      <AdminCourseContent
         rest={rest}
         // @ts-ignore
-        courseContent={courseContent?.value?.map((x: any) => ({
+        courseContent={fullCourseContent?.map((x: any) => ({
           title: x?.title || "",
           image: x?.thumbnail || "",
           id: x?.id || 0,
           createdAt: x?.createdAt,
         }))}
-        courseId={parseInt(courseId, 10)}
-      /> */}
+        courseId={courseId}
+      />
     </main>
   );
 }

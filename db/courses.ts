@@ -25,7 +25,7 @@ export async function findContentById( contentId : string) {
 
 export async function getFullContent(courseId?: string, parentId?: string) {
   if (courseId) {
-    const content = await db.content.findMany({
+    let content = await db.content.findMany({
       where: {
         courseId: courseId,
       },
@@ -33,11 +33,10 @@ export async function getFullContent(courseId?: string, parentId?: string) {
         position: "asc",
       },
     });
-    content.filter((content) => content.parentId === null);
-    console.log("content", content);
+    content = content.filter((content) => content.parentId === null);
+    console.log(content);
     return content;
   } else if (parentId) {
-    console.log("parentId", parentId);
     const content = await db.content.findMany({
       where: {
         parentId: parentId,
@@ -46,7 +45,7 @@ export async function getFullContent(courseId?: string, parentId?: string) {
         position: "asc",
       },
     });
-    console.log("content", content);
+    console.log(content);
     return content;
   }
   return [];

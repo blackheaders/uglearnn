@@ -21,7 +21,6 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
     toast({
       title: "Message Sent",
       description: "We've received your message and will get back to you soon.",

@@ -6,7 +6,6 @@ export async function POST(req: Request) {
   const { courseId, gdlink } = await req.json();
 
   try {
-    console.log(courseId, gdlink);
     await db.course.update({
       where: {
         id: courseId,

@@ -116,8 +116,7 @@ export default function AdminPage() {
       return <div>Loading...</div>
     }
   
-    // Debug: Check the session data
-    console.log(session?.user)
+
   
     // If the user is not logged in or is not an admin, redirect to home
     //@ts-ignore

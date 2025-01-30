@@ -1,9 +1,6 @@
-// import { getCourse, getFullCourseContent } from '@/db/course';
-// import { AddContent } from '@/components/admin/AddContent';
-// import { AdminCourseContent } from '@/components/admin/CourseContent';
-// import findContentById from '@/lib/find-content-by-id';
 "use client";
 import { AddContent } from "@/components/admin/AddContent";
+import { AdminCourseContent } from "@/components/admin/AdminCourseContent";
 import { getCourse, getFullContent } from "@/db/courses";
 
 export default async function UpdateCourseContent({
@@ -14,34 +11,7 @@ export default async function UpdateCourseContent({
   const courseId = params.courseId;
   const rest: string[] = [];
   const course = await getCourse(courseId);
-    const fullCourseContent = await getFullContent(courseId );
-//   const fullCourseContent = await getFullCourseContent(parseInt(courseId, 10));
-//   const courseContent = findContentById(
-//     fullCourseContent,
-//     rest.map((x) => parseInt(x, 10)),
-//   );
-//   const contentType = courseContent?.folder
-//     ? 'folder'
-//     : courseContent?.value.type;
-
-
-//   const contentType = 'video';
-
-//   if (contentType === 'video') {
-//     return (
-//       <div className="mx-auto max-w-screen-xl justify-between p-4 text-white">
-//         Video
-//       </div>
-//     );
-//   }
-
-//   if (contentType === 'notion') {
-//     return (
-//       <div className="text-blacke mx-auto max-w-screen-xl justify-between p-4 dark:text-white">
-//         Notion doc
-//       </div>
-//     );
-//   }
+  const fullCourseContent = await getFullContent(courseId );
 
   return (
     <main className="wrapper flex max-w-screen-xl m-10 flex-col gap-14">
@@ -57,17 +27,17 @@ export default async function UpdateCourseContent({
         courseTitle={course?.title || ''}
         gdlink={course?.gdlink}
       />
-      {/* <AdminCourseContent
+      <AdminCourseContent
         rest={rest}
         // @ts-ignore
-        courseContent={courseContent?.value.map((x: any) => ({
+        courseContent={fullCourseContent?.map((x: any) => ({
           title: x?.title || '',
           image: x?.thumbnail || '',
           id: x?.id || 0,
           createdAt: x?.createdAt,
         }))}
-        courseId={parseInt(courseId, 10)}
-      /> */}
+        courseId={courseId}
+      />
     </main>
   );
 }

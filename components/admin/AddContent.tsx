@@ -19,7 +19,7 @@ import {
 import { atom } from "recoil";
 import UploadPopup from "../UploadPopup";
 
-const trigger = atom<number>({
+export const trigger = atom<number>({
   key: "trigger",
   default: 0,
 });
@@ -89,8 +89,6 @@ export const AddContent = ({
     setLoading(true);
 
     if (gdlink) {
-      console.log("gdlink", gdlink);
-      console.log("newgdlink", newgdlink);
 
       const response = await fetch("/api/admin/content/gdlink", {
         body: JSON.stringify({
