@@ -13,3 +13,41 @@ export async function getCourse(courseId: string) {
   });
   return course;
 }
+
+export async function findContentById( contentId : string) {
+  const content = await db.content.findUnique({
+    where: {
+      id: contentId,
+    },
+  });
+  return content;
+}
+
+export async function getFullContent(courseId?: string, parentId?: string) {
+  if (courseId) {
+    const content = await db.content.findMany({
+      where: {
+        courseId: courseId,
+      },
+      orderBy: {
+        position: "asc",
+      },
+    });
+    content.filter((content) => content.parentId === null);
+    console.log("content", content);
+    return content;
+  } else if (parentId) {
+    console.log("parentId", parentId);
+    const content = await db.content.findMany({
+      where: {
+        parentId: parentId,
+      },
+      orderBy: {
+        position: "asc",
+      },
+    });
+    console.log("content", content);
+    return content;
+  }
+  return [];
+}

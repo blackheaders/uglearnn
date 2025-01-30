@@ -2,9 +2,9 @@
 // import { AddContent } from '@/components/admin/AddContent';
 // import { AdminCourseContent } from '@/components/admin/CourseContent';
 // import findContentById from '@/lib/find-content-by-id';
-
+"use client";
 import { AddContent } from "@/components/admin/AddContent";
-import { getCourse } from "@/db/courses";
+import { getCourse, getFullContent } from "@/db/courses";
 
 export default async function UpdateCourseContent({
   params,
@@ -14,6 +14,7 @@ export default async function UpdateCourseContent({
   const courseId = params.courseId;
   const rest: string[] = [];
   const course = await getCourse(courseId);
+    const fullCourseContent = await getFullContent(courseId );
 //   const fullCourseContent = await getFullCourseContent(parseInt(courseId, 10));
 //   const courseContent = findContentById(
 //     fullCourseContent,
@@ -52,7 +53,7 @@ export default async function UpdateCourseContent({
       <AddContent
         rest={rest}
         courseId={courseId}
-        parentContentId={parseFloat(rest[rest.length - 1])}
+        parentContentId={rest[rest.length - 1]}
         courseTitle={course?.title || ''}
         gdlink={course?.gdlink}
       />

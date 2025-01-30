@@ -33,14 +33,13 @@ export const AddContent = ({
 }: {
   rest: any;
   courseId: string;
-  parentContentId?: number;
-  courseTitle: string;
+  parentContentId?: string;
+  courseTitle: string | undefined;
   gdlink?: string | null;
 }) => {
   const [type, setType] = useState("folder");
   const [imageUri, setImageUri] = useState("");
   const [title, setTitle] = useState("");
-  const [metadata, setMetadata] = useState({});
   const [videoUrl, setVideoUrl] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
   const setTrigger = useSetRecoilState(trigger);
@@ -58,30 +57,25 @@ export const AddContent = ({
     }`;
   };
 
-  useEffect(() => {
-    console.log("newgdlink", newgdlink);
-  }, [newgdlink]);
+  // const formatInputJSON = (value: string) => {
+  //   const valWithout = value.replaceAll("\\", "").slice(1, -1);
+  //   if (valWithout[0] === "{") {
+  //     return valWithout;
+  //   }
+  //   return valWithout.slice(1, -1);
+  // };
 
-  const formatInputJSON = (value: string) => {
-    const valWithout = value.replaceAll("\\", "").slice(1, -1);
-    if (valWithout[0] === "{") {
-      return valWithout;
-    }
-    return valWithout.slice(1, -1);
-  };
-
-  const validateJSON = (value: string) => {
-    try {
-      JSON.parse(value);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  };
+  // const validateJSON = (value: string) => {
+  //   try {
+  //     JSON.parse(value);
+  //     return true;
+  //   } catch (error) {
+  //     return false;
+  //   }
+  // };
 
   const handleUploadSuccess = (url: string) => {
     if (uploadField) {
-      // form.setValue(uploadField, url);
       if (uploadField === "imageUrl") {
         setImageUri(url);
       } else if (uploadField === "videoUrl") {
@@ -143,7 +137,6 @@ export const AddContent = ({
       // handle success if needed
       toast.success(responseData.message);
       setTrigger((prev) => prev + 1); // why? trigger a re-render, this is a hack
-      setMetadata({});
     } else {
       // handle error if needed
       toast.error(responseData.message || "Something went wrong");
@@ -163,7 +156,6 @@ export const AddContent = ({
             value={type}
             onValueChange={(value) => {
               setType(value);
-              setMetadata({});
             }}>
             <Label htmlFor="video" className={getLabelClassName("video")}>
               <RadioGroupItem value="video" id="video" />
@@ -221,7 +213,7 @@ export const AddContent = ({
             setIsUploadPopupOpen={setIsUploadPopupOpen}
           />
         )}
-        {type === "pdf" && <AddPDFMetadata onChange={setMetadata} />}
+        {type === "pdf" && <AddPDFMetadata pdfUrl={pdfUrl} setPdfUrl={setPdfUrl} />}
 
         <Button
           onClick={handleContentSubmit}
@@ -240,19 +232,14 @@ export const AddContent = ({
   );
 };
 
-function AddPDFMetadata({ onChange }: { onChange: (metadata: any) => void }) {
-  const [pdfUrl, setPdfUrl] = useState("");
-
-  useEffect(() => {
-    onChange({ pdfUrl });
-  }, [pdfUrl]);
+function AddPDFMetadata({ pdfUrl, setPdfUrl }: { pdfUrl: string; setPdfUrl: (url: string) => void }) {
   return (
     <div>
       <Input
         type="text"
         placeholder="PDF URL"
-        onChange={async (e) => {
-          await setPdfUrl(e.target.value);
+        onChange={ (e) => {
+           setPdfUrl(e.target.value);
         }}
         className="h-14"
       />
