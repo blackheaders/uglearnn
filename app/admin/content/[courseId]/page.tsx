@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { AddContent } from "@/components/admin/AddContent";
 import { AdminCourseContent } from "@/components/admin/AdminCourseContent";
 
@@ -47,6 +47,7 @@ export default async function UpdateCourseContent({
         // @ts-ignore
         courseContent={fullCourseContent?.map((x: any) => ({
           title: x?.title || '',
+          type: x?.type || '',
           image: x?.thumbnail || '',
           id: x?.id || 0,
           createdAt: x?.createdAt,

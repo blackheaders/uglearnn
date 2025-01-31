@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useRouter } from 'next/navigation';
 import { RefreshCw } from 'lucide-react';
 import { useRecoilState } from 'recoil';
@@ -14,6 +14,7 @@ export const AdminCourseContent = ({
   courseId: string;
   courseContent: {
     title: string;
+    type: string;
     image: string;
     id: number;
     createdAt: Date;
@@ -56,12 +57,14 @@ export const AdminCourseContent = ({
             image: string;
             id: number;
             title: string;
+            type: string;
             createdAt: Date;
           }) => (
             <ContentCard
-              type={'folder'}
+              type={content.type}
               title={content.title}
               image={content.image || ''}
+              
               onClick={() => {
                 router.push(`${updatedRoute}/${content.id}`);
               }}

@@ -1,5 +1,5 @@
-"use client";
-import bgImage from "../public/Content-Cover.png";
+'use client';
+import bgImage from "../public/cardCover.png";
 
 const CardComponent = ({
   title,
@@ -23,14 +23,14 @@ const CardComponent = ({
       />
       <div className="relative flex h-full flex-grow flex-col items-center justify-center">
         <p className="md:text-md flex-wrap whitespace-normal text-wrap rounded-full border-black bg-gray-400/20 px-3 py-1 text-center text-xs capitalize text-white sm:text-lg lg:text-sm">
-          UG Learn
+          {type}
         </p>
         <p className="sm:text-md flex-wrap whitespace-normal text-wrap border-black text-center text-xs capitalize text-white sm:text-lg">
           {secondPart} {/* Displaying the second part of the title */}
         </p>
         {!secondPart && (
           <p className="sm:text-md flex-wrap whitespace-normal text-wrap border-black text-center text-xs capitalize text-white sm:text-lg">
-            {title} {/* Displaying the second part of the title */}
+            Ug Learn {/* Displaying the second part of the title */}
           </p>
         )}
       </div>

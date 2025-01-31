@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { CheckCircle2, Play } from 'lucide-react';
 // import { Bookmark } from '@prisma/client';
 // import BookmarkButton from './bookmark/BookmarkButton';
@@ -31,7 +31,7 @@ export const ContentCard = ({
   contentDuration,
   weeklyContentTitles,
 }: {
-  type: 'folder' | 'video' | 'notion';
+  type: string;
   contentId?: number;
   image: string;
   title: string;
@@ -69,6 +69,7 @@ export const ContentCard = ({
             {type !== 'video' && (
               <div className="relative overflow-hidden rounded-md">
                 <CardComponent
+                
                   title={title}
                   contentDuration={
                     contentDuration && formatTime(contentDuration)
