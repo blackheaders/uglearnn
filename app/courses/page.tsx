@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Course } from "@/types/types";
+import { CourseZ } from "@/types/types";
 import { Input } from "@/components/ui/input";
 
 const MotionCard = motion(Card);
@@ -31,7 +31,7 @@ export default function CoursesPage() {
   const [selectedCategory, setSelectedCategory] = useState<
     string | undefined
   >();
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<CourseZ[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredCourses = courses.filter(

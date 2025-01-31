@@ -1,128 +1,167 @@
-"use client"
+"use client";
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Book, Video } from 'lucide-react';
+import { Content, Course } from '@/types/types';
+import Sidebar from '@/components/Sidebar';
+import VideoPlayer from '@/components/VideoPlayer';
+import PDFViewer from '@/components/PDFViewer';
+import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-import { useState } from "react"
-import { useParams, useRouter } from "next/navigation"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { StripeCheckout } from "@/components/stripe-checkout"
-
-const courses = [
-  {
-    id: 1,
-    title: "Management Principles",
-    description: "Learn the fundamentals of management and leadership",
-    price: 99.99,
-    university: "Galgotias University",
-    category: "BBA",
-    videoUrl: "https://example.com/management-principles.mp4",
-    notes: "https://example.com/management-principles-notes.pdf",
-    slides: "https://example.com/management-principles-slides.pptx",
-  },
-  {
-    id: 2,
-    title: "Data Structures and Algorithms",
-    description: "Master the core concepts of computer science",
-    price: 129.99,
-    university: "Galgotias University",
-    category: "BTech",
-    videoUrl: "https://example.com/data-structures.mp4",
-    notes: "https://example.com/data-structures-notes.pdf",
-    slides: "https://example.com/data-structures-slides.pptx",
-  },
-  // Add more courses here
-]
-
-const MotionCard = motion(Card)
-
-export default function CourseDetailPage() {
-  const params = useParams()
-  const router = useRouter()
-  const courseId = parseInt(params.id as string)
-  const course = courses.find(c => c.id === courseId)
-
-  const [selectedTab, setSelectedTab] = useState("video")
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-
-  if (!course) {
-    return <div>Course not found</div>
+async function fetchCourseData(courseId: string) {
+  try {
+    const response = await fetch(`/api/fullCourse`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: courseId,
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error("Failed to fetch course data");
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    return null;
   }
-
-  const handlePurchaseSuccess = () => {
-    setIsDialogOpen(false)
-    router.push("/my-courses")
-  }
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8"
-    >
-      <MotionCard
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        <CardHeader>
-          <CardTitle>{course.title}</CardTitle>
-          <CardDescription>{course.university} - {course.category}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="mb-4">{course.description}</p>
-          <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-            <TabsList>
-              <TabsTrigger value="video">Video Preview</TabsTrigger>
-              <TabsTrigger value="details">Course Details</TabsTrigger>
-            </TabsList>
-            <motion.div
-              key={selectedTab}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <TabsContent value="video">
-                <video className="w-full aspect-video" controls>
-                  <source src={course.videoUrl} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </TabsContent>
-              <TabsContent value="details">
-                <ul className="list-disc list-inside">
-                  <li>Full course video lectures</li>
-                  <li>Comprehensive course notes (PDF)</li>
-                  <li>Presentation slides (PPT)</li>
-                  <li>24/7 support from instructors</li>
-                  <li>Certificate upon completion</li>
-                </ul>
-              </TabsContent>
-            </motion.div>
-          </Tabs>
-        </CardContent>
-        <CardFooter className="flex justify-between items-center">
-          <span className="text-lg font-bold">${course.price}</span>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-[#F6BD6A] text-white hover:bg-[#6C462E]">
-                Purchase Course
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Purchase Course</DialogTitle>
-                <DialogDescription>
-                  Complete your purchase for {course.title}
-                </DialogDescription>
-              </DialogHeader>
-              <StripeCheckout amount={course.price} onSuccess={handlePurchaseSuccess} />
-            </DialogContent>
-          </Dialog>
-        </CardFooter>
-      </MotionCard>
-    </motion.div>
-  )
 }
 
+const App = () => {
+  const [activeContent, setActiveContent] = useState<Content | null>(null);
+  const [viewType, setViewType] = useState<'video' | 'pdf'>('video');
+  const [sampleCourse, setCourse] = useState<Course | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  const courseId = useParams().id;
+
+  useEffect(() => {
+    async function loadCourse() {
+      if (typeof courseId === 'string') {
+        const data = await fetchCourseData(courseId);
+        if (data) {
+          setCourse(data);
+          console.log(data);
+        } else {
+          setError('Failed to load course');
+        }
+      } else {
+        setError('Invalid course ID');
+      }
+      setLoading(false);
+    }
+
+    loadCourse();
+  }, [courseId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!sampleCourse) {
+    return <div>No course data available</div>;
+  }
+
+  const handleContentSelect = (content: Content) => {
+    setActiveContent(content);
+    // Automatically set view type based on content type
+    if (content.type === 'pdf') {
+      setViewType('pdf');
+    } else if (content.type === 'video') {
+      setViewType('video');
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-50">
+      <Sidebar
+        content={sampleCourse.content}
+        activeContent={activeContent}
+        onContentSelect={handleContentSelect}
+      />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="bg-[#5C67E5] text-white px-6 py-4">
+          <div className="flex items-center gap-4">
+            <button className="hover:bg-[#4f5ed7] p-2 rounded-full">
+              <ArrowLeft className="w-6 h-6" onClick={() => router.push('/courses')} />
+            </button>
+            <div>
+              <h1 className="text-2xl font-semibold">{sampleCourse.title}</h1>
+              <p className="text-sm opacity-80">{sampleCourse.university} - {sampleCourse.program}</p>
+            </div>
+          </div>
+        </header>
+        
+        {activeContent ? (
+          <>
+            {(activeContent.videoUrl || activeContent.pdfUrl) && (
+              <div className="flex items-center gap-2 px-6 py-3 border-b border-gray-200 bg-white">
+                {activeContent.videoUrl && (
+                  <button
+                    onClick={() => setViewType('video')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
+                      viewType === 'video'
+                        ? 'bg-[#5C67E5] text-white'
+                        : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <Video className="w-4 h-4" />
+                    Video
+                  </button>
+                )}
+                {activeContent.pdfUrl && (
+                  <button
+                    onClick={() => setViewType('pdf')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
+                      viewType === 'pdf'
+                        ? 'bg-[#5C67E5] text-white'
+                        : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <Book className="w-4 h-4" />
+                    PDF
+                  </button>
+                )}
+              </div>
+            )}
+            <div className="flex-1 overflow-auto p-6">
+              <div className="max-w-5xl mx-auto">
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <h2 className="text-xl font-semibold mb-4">{activeContent.title}</h2>
+                  {activeContent.description && (
+                    <p className="text-gray-600 mb-6">{activeContent.description}</p>
+                  )}
+                  {viewType === 'video' && activeContent.videoUrl ? (
+                    <VideoPlayer url={activeContent.videoUrl} />
+                  ) : viewType === 'pdf' && activeContent.pdfUrl ? (
+                    <PDFViewer url={activeContent.pdfUrl} />
+                  ) : (
+                    <div className="text-gray-500 text-center py-8">
+                      No content available for this type
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center text-gray-500">
+            Select a lesson to start learning
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
