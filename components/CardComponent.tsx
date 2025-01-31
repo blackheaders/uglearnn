@@ -1,3 +1,4 @@
+"use client";
 import bgImage from "../public/Content-Cover.png";
 
 const CardComponent = ({

@@ -34,7 +34,6 @@ export async function getFullContent(courseId?: string, parentId?: string) {
       },
     });
     content = content.filter((content) => content.parentId === null);
-    console.log(content);
     return content;
   } else if (parentId) {
     const content = await db.content.findMany({
@@ -45,7 +44,6 @@ export async function getFullContent(courseId?: string, parentId?: string) {
         position: "asc",
       },
     });
-    console.log(content);
     return content;
   }
   return [];

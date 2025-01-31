@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useRouter } from 'next/navigation';
 import { RefreshCw } from 'lucide-react';
 import { useRecoilState } from 'recoil';

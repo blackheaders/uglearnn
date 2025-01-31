@@ -1,12 +1,6 @@
-// import { getCourse, getFullCourseContent } from '@/db/course';
-// import { AddContent } from '@/components/admin/AddContent';
-// import { AdminCourseContent } from '@/components/admin/CourseContent';
-// import findContentById from '@/lib/find-content-by-id';
-// import { UpdateVideoClient } from '@/components/admin/UpdateVideoClient';
-
+"use client";
 import { AddContent } from "@/components/admin/AddContent";
 import { AdminCourseContent } from "@/components/admin/AdminCourseContent";
-import { findContentById, getCourse, getFullContent } from "@/db/courses";
 
 export default async function UpdateCourseContent({
   params,
@@ -15,16 +9,40 @@ export default async function UpdateCourseContent({
 }) {
   const courseId = params.courseId;
   const rest = params.moduleId;
-  const course = await getCourse(courseId);
+  const course = await fetch('/api/admin/course/byId', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      courseId,
+    }),
+  }).then((res) => res.json());
   
   const parentId = rest[rest.length - 1];
 
-
-
-  const fullCourseContent = await getFullContent( parentId ? undefined : courseId, parentId );
+  const fullCourseContent = await fetch('/api/content', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      courseId: parentId ? undefined : courseId,
+      parentId,
+    }),
+  }).then((res) => res.json());
 
   const contentId = rest[rest.length - 1];
-  const courseContent = await findContentById(contentId);
+  const courseContent = await fetch(`/api/content/byId`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      contentId,
+    }),
+  }).then((res) => res.json());
+  
   if (!courseContent) {
     return (
       <div className="mx-auto max-w-screen-xl justify-between p-4 text-white">

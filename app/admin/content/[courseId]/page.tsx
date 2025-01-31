@@ -1,7 +1,6 @@
 "use client";
 import { AddContent } from "@/components/admin/AddContent";
 import { AdminCourseContent } from "@/components/admin/AdminCourseContent";
-import { getCourse, getFullContent } from "@/db/courses";
 
 export default async function UpdateCourseContent({
   params,
@@ -10,21 +9,37 @@ export default async function UpdateCourseContent({
 }) {
   const courseId = params.courseId;
   const rest: string[] = [];
-  const course = await getCourse(courseId);
-  const fullCourseContent = await getFullContent(courseId );
+  const course = await fetch('/api/admin/course/byId', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      courseId,
+    }),
+  }).then((res) => res.json());
+  const fullCourseContent = await fetch(`/api/content`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      courseId,
+    }),
+  }).then((res) => res.json());
 
   return (
     <main className="wrapper flex max-w-screen-xl m-10 flex-col gap-14">
       <div className="flex w-full flex-col justify-between gap-2 rounded-lg border-2 bg-primary/5 p-4">
         <h1 className="text-2xl font-bold md:text-4xl">Content</h1>
-        <p className="text-lg capitalize">{course?.title || ''}</p>
+        <p className="text-lg capitalize">{course?.title || ""}</p>
       </div>
 
       <AddContent
         rest={rest}
         courseId={courseId}
         parentContentId={rest[rest.length - 1]}
-        courseTitle={course?.title || ''}
+        courseTitle={course?.title || ""}
         gdlink={course?.gdlink}
       />
       <AdminCourseContent

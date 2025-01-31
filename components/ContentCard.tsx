@@ -1,3 +1,4 @@
+"use client";
 import { CheckCircle2, Play } from 'lucide-react';
 // import { Bookmark } from '@prisma/client';
 // import BookmarkButton from './bookmark/BookmarkButton';
