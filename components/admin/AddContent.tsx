@@ -7,15 +7,6 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { useSetRecoilState } from "recoil";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { atom } from "recoil";
 import UploadPopup from "../UploadPopup";
 
@@ -57,23 +48,6 @@ export const AddContent = ({
     }`;
   };
 
-  // const formatInputJSON = (value: string) => {
-  //   const valWithout = value.replaceAll("\\", "").slice(1, -1);
-  //   if (valWithout[0] === "{") {
-  //     return valWithout;
-  //   }
-  //   return valWithout.slice(1, -1);
-  // };
-
-  // const validateJSON = (value: string) => {
-  //   try {
-  //     JSON.parse(value);
-  //     return true;
-  //   } catch (error) {
-  //     return false;
-  //   }
-  // };
-
   const handleUploadSuccess = (url: string) => {
     if (uploadField) {
       if (uploadField === "imageUrl") {
@@ -102,7 +76,7 @@ export const AddContent = ({
       });
 
       const responseData = await response.json();
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         toast.success(responseData.message);
         setNewgdlink(""); // Reset after success
       } else {
@@ -131,9 +105,13 @@ export const AddContent = ({
     });
     const responseData = await response.json();
     setLoading(false);
-    if (response.status === 200) {
+    if (response.status === 200 || response.status === 201) {
       // handle success if needed
       toast.success(responseData.message);
+      setVideoUrl("");
+      setPdfUrl("");
+      setImageUri("");
+      setTitle("");      
       setTrigger((prev) => prev + 1); // why? trigger a re-render, this is a hack
     } else {
       // handle error if needed
@@ -179,6 +157,7 @@ export const AddContent = ({
             <Input
               type="text"
               placeholder="Title"
+              value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="h-14"
             />
