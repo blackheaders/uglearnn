@@ -46,6 +46,9 @@ const courseSchema = z.object({
   program: z.string().min(2, {
     message: "Program name must be at least 2 characters long.",
   }),
+  semester: z.string().min(1, {
+    message: "Semester is required.",
+  }),
   price: z.number().min(0, {
     message: "Price must be at least 0.",
   }),
@@ -70,6 +73,7 @@ export default function Courses() {
       description: "",
       program: "",
       university: "",
+      semester: "",
       videoUrl: "",
       price: 0,
       gdlink: "",
@@ -254,6 +258,23 @@ export default function Courses() {
 
                         <FormField
                           control={form.control}
+                          name="semester"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Semester</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Enter semester (e.g., 1st, 2nd)"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
                           name="videoUrl"
                           render={({ field }) => (
                             <FormItem>
@@ -315,107 +336,6 @@ export default function Courses() {
             </div>
           </AccordionContent>
         </AccordionItem>
-
-        {/* <AccordionItem className="border-none" value="discord-config">
-          <AccordionTrigger className="p-6 text-2xl font-bold">
-            <div className="flex flex-col gap-4">
-              <FaDiscord className="text-5xl" /> Discord Config
-            </div>
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="grid w-full grid-cols-1 lg:grid-cols-7">
-              <div className="text-gray-400col-span-1 p-6 text-sm font-semibold lg:col-span-2">
-                Mangae discord configuration for the users
-              </div>
-              <div className="col-span-1 p-4 lg:col-span-5">
-                <Card className="bg-background">
-                  <CardHeader>
-                    <CardTitle>Discord</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-col gap-5 lg:flex-row">
-                    <Card className="mx-auto w-full max-w-3xl overflow-y-auto border-2 bg-background">
-                      <CardHeader>
-                        <CardTitle>
-                          Allow user another account in cohort 3
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="grid gap-4 p-4 pt-0">
-                        <Input
-                          type="text"
-                          placeholder="Email"
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                          }}></Input>
-                        <Input
-                          type="text"
-                          placeholder="Admin Password"
-                          onChange={(e) => {
-                            setAdminPassword(e.target.value);
-                          }}></Input>
-                        <Button
-                          onClick={async () => {
-                            try {
-                              const res = await axios.post(
-                                "/api/admin/discordReset",
-                                {
-                                  email,
-                                  adminPassword,
-                                }
-                              );
-                              toast(JSON.stringify(res.data.data));
-                            } catch (error) {
-                              //@ts-ignore
-                              toast.error(error.response.data.message);
-                            }
-                          }}>
-                          Reset
-                        </Button>
-                      </CardContent>
-                    </Card>
-                    <Card className="mx-auto w-full max-w-3xl overflow-y-auto border-2 bg-background">
-                      <CardHeader>
-                        <CardTitle>
-                          Get users discord username in cohort 3
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="grid gap-4 p-4 pt-0">
-                        <Input
-                          type="text"
-                          placeholder="Email"
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                          }}></Input>
-                        <Input
-                          type="text"
-                          placeholder="Admin Password"
-                          onChange={(e) => {
-                            setAdminPassword(e.target.value);
-                          }}></Input>
-                        <Button
-                          onClick={async () => {
-                            try {
-                              const res = await axios.post(
-                                "/api/admin/discordReset/get",
-                                {
-                                  email,
-                                  adminPassword,
-                                }
-                              );
-                              alert(JSON.stringify(res.data));
-                            } catch (error: any) {
-                              toast.error(error.response.data.message);
-                            }
-                          }}>
-                          Get
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem> */}
       </Accordion>
       {isUploadPopupOpen && <UploadPopup onSuccess={handleUploadSuccess} onClose={() => setIsUploadPopupOpen(false)} />}
     </div>

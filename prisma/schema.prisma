@@ -54,6 +54,7 @@ model Course {
   gdlink      String?
   university  String
   program     String
+  semester    String
   price       Float
   content     Content[] @relation("CourseContent")
   createdAt   DateTime @default(now())

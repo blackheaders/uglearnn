@@ -10,6 +10,7 @@ const requestBodySchema = z.object({
     .url({ message: 'URL should be valid image URL.' })
     .or(z.string()),
   university: z.string().min(2, { message: 'University name must be at least 2 characters long.' }),
+  semester: z.string().min(1, { message: 'Semester is required.' }),
   program: z.string().min(2, { message: 'Program name must be at least 2 characters long.' }),
   price: z.number().min(0, { message: 'Price must be a positive number.' }),  // Ensure price is a positive number
   videoUrl: z.string().optional(),  // Video URL is optional
@@ -36,6 +37,7 @@ export async function POST(req: NextRequest) {
     program,
     price,
     videoUrl,
+    semester,
     gdlink,
   } = parseResult.data;
 
@@ -47,6 +49,7 @@ export async function POST(req: NextRequest) {
       imageUrl,
       university,
       program,
+      semester,
       price: Number(price) || 0,
       videoUrl,
       gdlink,

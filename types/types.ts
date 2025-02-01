@@ -20,6 +20,9 @@ const courseSchema = z.object({
   price: z.number().min(0, {
     message: "Price must be at least 0.",
   }),
+  semester: z.string().min(1, {
+    message: "Semester is required.",
+  }),
   gdlink: z.string().optional(),
   id: z.string().optional(),
 })

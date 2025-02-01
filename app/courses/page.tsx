@@ -21,16 +21,21 @@ import {
 } from "@/components/ui/select";
 import { CourseZ } from "@/types/types";
 import { Input } from "@/components/ui/input";
+import { useSearchParams } from "next/navigation";
 
 const MotionCard = motion(Card);
 
 export default function CoursesPage() {
+  const searchParams = useSearchParams();
   const [selectedUniversity, setSelectedUniversity] = useState<
     string | undefined
-  >();
+  >(searchParams.get("university") || undefined);
   const [selectedCategory, setSelectedCategory] = useState<
     string | undefined
-  >();
+  >(searchParams.get("category") || undefined);
+  const [selectedSemester, setSelectedSemester] = useState<
+    string | undefined
+  >(searchParams.get("semester") || undefined);
   const [courses, setCourses] = useState<CourseZ[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -38,6 +43,7 @@ export default function CoursesPage() {
     (course) =>
       (!selectedUniversity || course.university === selectedUniversity) &&
       (!selectedCategory || course.program === selectedCategory) &&
+      (!selectedSemester || course.semester === selectedSemester) &&
       (course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         course.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
@@ -71,7 +77,7 @@ export default function CoursesPage() {
       </div>
 
       <div className="mb-8 flex flex-col md:flex-row gap-4">
-        <Select onValueChange={setSelectedUniversity}>
+        <Select onValueChange={setSelectedUniversity} value={selectedUniversity}>
           <SelectTrigger className="w-full md:w-[200px]">
             <SelectValue placeholder="Select University" />
           </SelectTrigger>
@@ -86,7 +92,7 @@ export default function CoursesPage() {
           </SelectContent>
         </Select>
 
-        <Select onValueChange={setSelectedCategory}>
+        <Select onValueChange={setSelectedCategory} value={selectedCategory}>
           <SelectTrigger className="w-full md:w-[200px]">
             <SelectValue placeholder="Select Category" />
           </SelectTrigger>
@@ -95,6 +101,21 @@ export default function CoursesPage() {
               (program) => (
                 <SelectItem key={program} value={program}>
                   {program}
+                </SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
+
+        <Select onValueChange={setSelectedSemester} value={selectedSemester}>
+          <SelectTrigger className="w-full md:w-[200px]">
+            <SelectValue placeholder="Select Semester" />
+          </SelectTrigger>
+          <SelectContent>
+            {Array.from(new Set(courses.map((course) => course.semester))).map(
+              (semester) => (
+                <SelectItem key={semester} value={semester}>
+                  {semester}
                 </SelectItem>
               )
             )}
@@ -127,7 +148,7 @@ export default function CoursesPage() {
             <CardHeader>
               <CardTitle>{course.title}</CardTitle>
               <CardDescription>
-                {course.university} - {course.program}
+                {course.university} - {course.program} - Semester {course.semester}
               </CardDescription>
             </CardHeader>
             <CardContent>
