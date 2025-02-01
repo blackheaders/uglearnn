@@ -143,7 +143,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                   <span className="text-sm">Reply</span>
                 </button>
                 {/* @ts-ignore */}
-                {session.user?.id === comment.user.id && (
+                {session.user?.id === comment.user.id && session.user?.role === "admin" && (
                   <div className="relative">
                 <button 
                   className="p-1 hover:bg-gray-100 rounded"
