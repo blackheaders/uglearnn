@@ -46,7 +46,7 @@ const ContentItem: React.FC<{
         style={{ paddingLeft: `${level * 16 + 16}px` }}
       >
         {getIcon(item.type)}
-        <span className="truncate">{item.title}</span>
+        <span className="truncate text-sm">{item.title}</span>
       </button>
       {item.type === 'folder' && isExpanded && item.children && item.children.length > 0 && (
         <div className="w-full">
@@ -71,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onContentSelect,
 }) => {
   return (
-    <div className="w-80 h-full bg-white border-r border-gray-200 overflow-y-auto">
+    <div className="w-full h-full bg-white border-r border-gray-200 overflow-y-auto">
       <div className="p-4 border-b border-gray-200">
         <h2 className="font-semibold text-lg">Course Content</h2>
       </div>
