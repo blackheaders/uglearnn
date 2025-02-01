@@ -1,48 +1,70 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface VideoPlayerProps {
   url: string;
-  onTimeUpdate?: (currentTime: number) => void;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, onTimeUpdate }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ url }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [videoSrc, setVideoSrc] = useState(url);
   const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (video && onTimeUpdate) {
-      video.addEventListener('timeupdate', () => onTimeUpdate(video.currentTime));
-      return () => video.removeEventListener('timeupdate', () => onTimeUpdate(video.currentTime));
-    }
-  }, [onTimeUpdate]);
-
-  if (isYouTube) {
-    const videoId = url.split('v=')[1] || url.split('/').pop();
-    return (
-      <div className="relative w-full pt-[56.25%]">
-        <iframe
-          className="absolute top-0 left-0 w-full h-full rounded-lg"
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=0&modestbranding=1`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      </div>
-    );
+  function getYouTubeVideoId(url:string) {
+    const regex = /(?:youtu\.be\/|youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=))([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
   }
+  useEffect(() => {
+    if (isYouTube) {
+      setIsLoading(true);
+      fetchMp4Link(url).then((mp4Url) => {
+        setVideoSrc(mp4Url);
+        setIsLoading(false);
+      }).catch(() => setIsLoading(false));
+    }
+  }, [url]);
+  // useEffect(() => {
+  //   const video = videoRef.current;
+  //   if (video && onTimeUpdate) {
+  //     const handleTimeUpdate = () => onTimeUpdate(video.currentTime);
+  //     video.addEventListener('timeupdate', handleTimeUpdate);
+  //     return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+  //   }
+  // }, [onTimeUpdate]);
+
+  const fetchMp4Link = async (youtubeUrl: string): Promise<string> => {
+    try {
+        const videoId = getYouTubeVideoId(youtubeUrl);
+      const response = await axios.get(`/api/ytube?videoId=${videoId}`);
+      return response.data.mp4Url;
+    } catch (error) {
+      console.error("Error fetching MP4 link:", error);
+      return url;
+    }
+  };
 
   return (
-    <video
-      ref={videoRef}
-      className="w-full rounded-lg aspect-video"
-      controls
-      controlsList="nodownload"
-      playsInline
-    >
-      <source src={url} type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+    <div className="relative w-full rounded-lg overflow-hidden">
+      {isLoading ? (
+        <div className="flex items-center justify-center w-full h-64 bg-gray-800 text-white">
+          Loading video...
+        </div>
+      ) : (
+        <video
+          ref={videoRef}
+          className="w-full rounded-lg"
+          controls
+          controlsList="nodownload"
+          playsInline
+          src={videoSrc}
+        >
+          Your browser does not support the video tag.
+        </video>
+      )}
+    </div>
   );
-}
+};
 
 export default VideoPlayer;
