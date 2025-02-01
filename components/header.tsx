@@ -2,7 +2,6 @@
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 
 export default function Header() {
   const { data: session } = useSession(); 
@@ -42,6 +41,7 @@ export default function Header() {
             >
               Logout
             </Button>
+            
           </div>
         ) : (
           <>

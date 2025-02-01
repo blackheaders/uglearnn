@@ -7,6 +7,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 import PDFViewer from '@/components/PDFViewer';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import Comments from '@/components/Comments';
 
 async function fetchCourseData(courseId: string) {
   try {
@@ -118,7 +119,7 @@ const App = () => {
                 <Menu className="w-6 h-6" />
               </button>
               <button className="hidden lg:block hover:bg-[#4f5ed7] p-2 rounded-full">
-                <ArrowLeft className="w-6 h-6" />
+                <ArrowLeft onClick={() => {router.push('/courses')}} className="w-6 h-6" />
               </button>
               <div className="min-w-0 flex-1">
                 <h1 className="text-lg sm:text-2xl font-semibold truncate">
@@ -171,7 +172,10 @@ const App = () => {
                       <p className="text-gray-600 mb-6">{activeContent.description}</p>
                     )}
                     {viewType === 'video' && activeContent.videoUrl ? (
+                      <>
                       <VideoPlayer url={activeContent.videoUrl} />
+                      <Comments contentId={activeContent.id} />
+                      </>
                     ) : viewType === 'pdf' && activeContent.pdfUrl ? (
                       <PDFViewer url={activeContent.pdfUrl} />
                     ) : (

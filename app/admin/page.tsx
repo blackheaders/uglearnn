@@ -21,7 +21,7 @@ export default function AdminPage() {
       return <div>Loading...</div>
     }
     
-    // If the user is not logged in or is not an admin, redirect to home
+    // If the user is not logged in or is not an admin, redirect to home    
     //@ts-ignore
     if (!session?.user || session.user?.role !== "admin") {
       redirect("/")

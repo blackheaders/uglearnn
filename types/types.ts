@@ -57,4 +57,26 @@ export interface CourseResponse {
   courses: Course[];
 }
 
+export interface User {
+  id: string;
+  name: string | null;
+}
+
+export interface Comment {
+  id: string;
+  content: string;
+  contentId: string;
+  parentId: string | null;
+  userId: string;
+  user: User;
+  upvotes: number;
+  downvotes: number;
+  repliesCount: number;
+  createdAt: string;
+  updatedAt: string;
+  isPinned: boolean;
+  children?: Comment[];
+}
+
+
 export type CourseZ = z.infer<typeof courseSchema>
