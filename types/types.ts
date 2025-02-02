@@ -50,6 +50,7 @@ export interface Course {
   gdlink: string | null;
   university: string;
   program: string;
+  semester: string;
   price: number;
   content: Content[];
   createdAt: string;

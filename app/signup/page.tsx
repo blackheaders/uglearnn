@@ -126,8 +126,9 @@ export default function SignupPage() {
               <SelectValue placeholder="Select your university" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="example-university">Example University</SelectItem>
-              <SelectItem value="tech-institute">Tech Institute</SelectItem>
+              <SelectItem value="galgotias-university">Galgotias University</SelectItem>
+              <SelectItem value="gl-bajaj">GL BAJAJ</SelectItem>
+              <SelectItem value="amity">AMITY</SelectItem>
               {/* Add more universities as needed */}
             </SelectContent>
           </Select>
