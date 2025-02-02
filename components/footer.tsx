@@ -1,4 +1,5 @@
-import Link from "next/link"
+import Link from "next/link";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -12,16 +13,35 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/">Home</Link></li>
-              <li><Link href="/courses">Courses</Link></li>
-              <li><Link href="/about">About Us</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
+              <li>
+                <Link href="/">Home</Link>
+              </li>
+              <li>
+                <Link href="/courses">Courses</Link>
+              </li>
+              <li>
+                <Link href="/about">About Us</Link>
+              </li>
+              <li>
+                <Link href="/contact">Contact</Link>
+              </li>
             </ul>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <p>Email: hellouglearn@gmail.com</p>
             <p>Phone: +91 8368505428</p>
+            <div className="mt-4 flex space-x-6">
+              <Link href="https://www.instagram.com/uglearn" target="_blank">
+                <FaInstagram className="text-white text-2xl hover:text-gray-400" />
+              </Link>
+              <Link
+                href="https://www.linkedin.com/company/uglearn-savvy"
+                target="_blank"
+              >
+                <FaLinkedin className="text-white text-2xl hover:text-gray-400" />
+              </Link>
+            </div>
           </div>
         </div>
         <div className="mt-8 text-center">
@@ -29,6 +49,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
-

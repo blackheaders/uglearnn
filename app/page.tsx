@@ -32,7 +32,7 @@ export default function Home() {
         <section className="container mx-auto px-4 py-16">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-[#5C67E5] mb-4">
-              Find and Purchase Courses for Your University
+              UGlearn is democratizing UG Education making it accessible to all, join the revolution for a stress free and trusted content for UG education on India's first platform offering customized solutions for UG courses.
             </h1>
             <p className="text-xl text-black mb-8">
               Enhance your learning with Uglearn's curated courses
@@ -78,7 +78,7 @@ export default function Home() {
               <CardContent>
                 <ul className="list-disc list-inside">
                   <li>Data Structures and Algorithms</li>
-                  <li>Circuit Theory and Design</li>
+                  <li>IDS</li>
                   <li>Engineering Mathematics</li>
                 </ul>
               </CardContent>

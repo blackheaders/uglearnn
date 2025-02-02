@@ -70,7 +70,7 @@ export function TeamSwiper() {
           <Image
             height={500}
             width={500}
-            src="/IMG_20250115_095442736_HDR_AE.jpg"
+            src="https://res.cloudinary.com/dklqhgo8r/image/upload/v1738488328/fxe612kpv2srnvlyqrem.jpg"
             alt=""
             className="h-full w-full object-fill rounded-md"
           />
@@ -79,7 +79,7 @@ export function TeamSwiper() {
           <Image
             height={500}
             width={500}
-            src="/IMG_20250121_165913289_HDR_AE.jpg"
+            src="https://res.cloudinary.com/dklqhgo8r/image/upload/v1738488327/lcjdjrk8jxpzhx7kp1ez.jpg"
             alt=""
             className="h-full w-full object-fill rounded-md"
           />
@@ -88,7 +88,7 @@ export function TeamSwiper() {
           <Image
             height={500}
             width={500}
-            src="/IMG_20250121_151024453_HDR_AE.jpg"
+            src="https://res.cloudinary.com/dklqhgo8r/image/upload/v1738488325/nzqlkb7qmvhsybywq2fw.jpg"
             alt=""
             className="h-full w-full object-fill rounded-md"
           />
@@ -97,7 +97,7 @@ export function TeamSwiper() {
           <Image
             height={500}
             width={500}
-            src="/IMG_20250115_102250269_HDR_AE.jpg"
+            src="https://res.cloudinary.com/dklqhgo8r/image/upload/v1738488323/pyvpyumgojsrjvbgacag.jpg"
             alt=""
             className="h-full w-full object-fill rounded-md"
           />
