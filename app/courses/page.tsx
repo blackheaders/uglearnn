@@ -79,7 +79,7 @@ export default function CoursesPage() {
       <div className="mb-8 flex flex-col md:flex-row gap-4">
         <Select onValueChange={setSelectedUniversity} value={selectedUniversity}>
           <SelectTrigger className="w-full md:w-[200px]">
-            <SelectValue placeholder="Select University" />
+            <SelectValue placeholder="Select College/University" />
           </SelectTrigger>
           <SelectContent>
             {Array.from(
