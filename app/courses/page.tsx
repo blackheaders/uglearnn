@@ -1,5 +1,4 @@
 "use client";
-export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -21,21 +20,27 @@ import {
 } from "@/components/ui/select";
 import { CourseZ } from "@/types/types";
 import { Input } from "@/components/ui/input";
-import { useSearchParams } from "next/navigation";
 
 const MotionCard = motion(Card);
 
 export default function CoursesPage() {
-  const searchParams = useSearchParams();
   const [selectedUniversity, setSelectedUniversity] = useState<
     string | undefined
-  >(searchParams.get("university") || undefined);
+  >();
   const [selectedCategory, setSelectedCategory] = useState<
     string | undefined
-  >(searchParams.get("category") || undefined);
+  >();
   const [selectedSemester, setSelectedSemester] = useState<
     string | undefined
-  >(searchParams.get("semester") || undefined);
+  >();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setSelectedUniversity(params.get("university") || undefined);
+    setSelectedCategory(params.get("category") || undefined);
+    setSelectedSemester(params.get("semester") || undefined);
+  }, []);
+
   const [courses, setCourses] = useState<CourseZ[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -77,7 +82,9 @@ export default function CoursesPage() {
       </div>
 
       <div className="mb-8 flex flex-col md:flex-row gap-4">
-        <Select onValueChange={setSelectedUniversity} value={selectedUniversity}>
+        <Select
+          onValueChange={setSelectedUniversity}
+          value={selectedUniversity}>
           <SelectTrigger className="w-full md:w-[200px]">
             <SelectValue placeholder="Select College/University" />
           </SelectTrigger>
@@ -148,7 +155,8 @@ export default function CoursesPage() {
             <CardHeader>
               <CardTitle>{course.title}</CardTitle>
               <CardDescription>
-                {course.university} - {course.program} - Semester {course.semester}
+                {course.university} - {course.program} - Semester{" "}
+                {course.semester}
               </CardDescription>
             </CardHeader>
             <CardContent>
