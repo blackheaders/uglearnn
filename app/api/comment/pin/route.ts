@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { createPinComment } from "@/db/comments";
 import { NextResponse } from "next/server";
 
