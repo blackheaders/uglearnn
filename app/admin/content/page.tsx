@@ -20,6 +20,7 @@ export default async function CourseContent() {
           <h2 className="text-md font-bold">Add Course</h2>
         </Link>
       </section>
+      {/* @ts-ignore */}
       <SelectCourse courses={courses} />
     </div>
   );

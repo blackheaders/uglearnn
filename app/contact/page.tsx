@@ -4,9 +4,9 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-
+import { toast } from 'sonner'
 export default function ContactPage() {
+  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,21 +19,42 @@ export default function ContactPage() {
     setFormData(prevState => ({ ...prevState, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    toast({
-      title: "Message Sent",
-      description: "We've received your message and will get back to you soon.",
-    })
-    setFormData({ name: "", email: "", subject: "", message: "" })
-  }
+    setIsLoading(true)
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
 
+      if (response.ok) {
+        toast.success("Message Sent", {
+          description: "We've received your message and will get back to you soon.",
+        })
+        setFormData({ name: "", email: "", subject: "", message: "" })
+      } else {
+        toast.error("Error", {
+          description: "Something went wrong. Please try again later.",
+        })
+      }
+    } catch (error) {
+      toast.error("Error", {
+        description: "Something went wrong. Please try again later.",
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-[#6C462E] mb-8">Contact Us</h1>
+      <h1 className="text-3xl font-bold text-[#5C67E5] mb-8">Contact Us</h1>
       <form onSubmit={handleSubmit} className="max-w-md mx-auto">
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-[#81674F] mb-1">Name</label>
+          <label htmlFor="name" className="block text-sm font-medium text-[#5C67E5] mb-1">Name</label>
           <Input
             type="text"
             id="name"
@@ -41,10 +62,11 @@ export default function ContactPage() {
             value={formData.name}
             onChange={handleChange}
             required
+            disabled={isLoading}
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-[#81674F] mb-1">Email</label>
+          <label htmlFor="email" className="block text-sm font-medium text-[#5C67E5] mb-1">Email</label>
           <Input
             type="email"
             id="email"
@@ -52,10 +74,11 @@ export default function ContactPage() {
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={isLoading}
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="subject" className="block text-sm font-medium text-[#81674F] mb-1">Subject</label>
+          <label htmlFor="subject" className="block text-sm font-medium text-[#5C67E5] mb-1">Subject</label>
           <Input
             type="text"
             id="subject"
@@ -63,23 +86,24 @@ export default function ContactPage() {
             value={formData.subject}
             onChange={handleChange}
             required
+            disabled={isLoading}
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="message" className="block text-sm font-medium text-[#81674F] mb-1">Message</label>
+          <label htmlFor="message" className="block text-sm font-medium text-[#5C67E5] mb-1">Message</label>
           <Textarea
             id="message"
             name="message"
             value={formData.message}
             onChange={handleChange}
             required
+            disabled={isLoading}
           />
         </div>
-        <Button type="submit" className="w-full bg-[#F6BD6A] text-white hover:bg-[#6C462E]">
-          Send Message
+        <Button type="submit" className="w-full bg-[#5C67E5] text-white hover:bg-[#4f5ed7]" disabled={isLoading}>
+          {isLoading ? "Sending..." : "Send Message"}
         </Button>
       </form>
     </div>
   )
 }
-
