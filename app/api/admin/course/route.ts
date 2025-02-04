@@ -67,3 +67,121 @@ export async function POST(req: NextRequest) {
     },
   );
 }
+export async function DELETE(req: Request) {
+  try {
+    const { id: courseId } = await req.json();
+
+    // Step 1: Find all content IDs associated with the course
+    const courseContent = await db.content.findMany({
+      where: { courseId },
+      select: { id: true },
+    });
+
+    const contentIds = courseContent.map((content) => content.id);
+
+    if (contentIds.length > 0) {
+      // Step 2: Recursively delete all nested content (child content)
+      await deleteContentRecursively(contentIds);
+
+      // Step 3: Delete all remaining content linked to the course
+      await db.content.deleteMany({
+        where: { courseId },
+      });
+    }
+
+    // Step 4: Delete the course itself
+    await db.course.delete({
+      where: { id: courseId },
+    });
+
+    return NextResponse.json(
+      { message: "Course and all related data deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    return NextResponse.json(
+      { error: "Error deleting course and its related data" },
+      { status: 500 }
+    );
+  }
+}
+
+async function deleteContentRecursively(contentIds: string[]) {
+  if (contentIds.length === 0) return;
+
+  // Step 1: Find all child content
+  const childContent = await db.content.findMany({
+    where: { parentId: { in: contentIds } },
+    select: { id: true },
+  });
+
+  const childContentIds = childContent.map((content) => content.id);
+
+  // Step 2: Find all comments linked to the content
+  const comments = await db.comment.findMany({
+    where: { contentId: { in: contentIds } },
+    select: { id: true },
+  });
+
+  const commentIds = comments.map((comment) => comment.id);
+
+  // Step 3: Delete votes related to comments
+  if (commentIds.length > 0) {
+    await db.vote.deleteMany({
+      where: { commentId: { in: commentIds } },
+    });
+
+    // Step 4: Recursively delete child comments (nested comments)
+    await deleteCommentsRecursively(commentIds);
+
+    // Step 5: Delete comments
+    await db.comment.deleteMany({
+      where: { contentId: { in: contentIds } },
+    });
+  }
+
+  // Step 6: Recursively delete child content
+  if (childContentIds.length > 0) {
+    await deleteContentRecursively(childContentIds);
+  }
+
+  // Step 7: Finally, delete the parent content
+  await db.content.deleteMany({
+    where: { id: { in: contentIds } },
+  });
+}
+
+
+async function deleteCommentsRecursively(commentIds: string[]) {
+  if (commentIds.length === 0) return;
+
+  // Step 1: Find all child comments
+  const childComments = await db.comment.findMany({
+    where: { parentId: { in: commentIds } },
+    select: { id: true },
+  });
+
+  const childCommentIds = childComments.map((comment) => comment.id);
+
+  // Step 2: Delete votes related to child comments
+  if (childCommentIds.length > 0) {
+    await db.vote.deleteMany({
+      where: { commentId: { in: childCommentIds } },
+    });
+
+    // Step 3: Recursively delete child comments
+    await deleteCommentsRecursively(childCommentIds);
+
+    // Step 4: Delete child comments
+    await db.comment.deleteMany({
+      where: { id: { in: childCommentIds } },
+    });
+  }
+
+  // Step 5: Delete parent comments
+  await db.comment.deleteMany({
+    where: { id: { in: commentIds } },
+  });
+}
+
