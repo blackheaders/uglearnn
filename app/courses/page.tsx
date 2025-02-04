@@ -47,12 +47,12 @@ export default function CoursesPage() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("/api/courses?timestamp=" + new Date().getTime(), {
+    fetch("/api/courses", {
+      method: "POST",
       headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({ timestamp: Date.now() }),
     })
       .then((res) => res.json())
       .then((data) => {
