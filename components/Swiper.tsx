@@ -24,7 +24,7 @@ export function SwiperComponent() {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper w-full h-full"
       >
-        <SwiperSlide className="text-center text-md  flex justify-center items-center">
+        <SwiperSlide className="text-center text-md flex justify-center items-center">
           <Image
             height={500}
             width={500}
