@@ -45,14 +45,13 @@ export default function CoursesPage() {
     setSelectedSemester(params.get("semester") || undefined);
   }, []);
 
-  // Add no-cache headers to the fetch request
   useEffect(() => {
     setIsLoading(true);
-    fetch("/api/courses", {
+    fetch("/api/courses?timestamp=" + new Date().getTime(), {
       headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate", // Disable caching
-        Pragma: "no-cache", // Disable cache for HTTP/1.0
-        Expires: "0", // Disable cache expiration
+        "Cache-Control": "no-cache, no-store, must-revalidate", 
+        Pragma: "no-cache", 
+        Expires: "0", 
       },
     })
       .then((res) => res.json())
@@ -70,34 +69,29 @@ export default function CoursesPage() {
     i == 0 ? "1st" : i == 1 ? "2nd" : i == 2 ? "3rd" : `${i + 1}th`
   );
 
-  // Utility function to normalize semester data (removes suffixes like st, nd, rd, th)
   const normalizeSemester = (semester: string) => {
     return semester
       .replace(/[^0-9a-zA-Z, ]/g, "")
       .replace(/\s+/g, " ")
-      .trim(); // Removes extra characters and extra spaces
+      .trim(); 
   };
 
-  // Utility function to split and normalize the semester data (handles both commas and "and")
   const splitSemesters = (semesterString: string) => {
     return semesterString
-      .split(/,\s*|\s+and\s+/) // Split by comma or by the word "and"
-      .map((sem) => normalizeSemester(sem)); // Normalize each semester (remove suffixes and extra spaces)
+      .split(/,\s*|\s+and\s+/) 
+      .map((sem) => normalizeSemester(sem)); 
   };
-  // Filter courses based on selected filters and search query
   const filteredCourses = courses.filter((course) => {
-    // Check if the course matches the selected filters
     const matchesUniversity =
       !selectedUniversity || course.university === selectedUniversity;
     const matchesCategory =
       !selectedCategory || course.program === selectedCategory;
 
-    // Adjust semester filter to handle multiple semesters (splitting by commas or "and")
     const matchesSemester =
       !selectedSemester ||
       splitSemesters(course.semester).includes(
         normalizeSemester(selectedSemester)
-      ); // Compare with normalized selected semester
+      ); 
 
     const matchesSearchQuery =
       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

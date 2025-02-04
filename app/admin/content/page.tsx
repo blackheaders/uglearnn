@@ -9,7 +9,7 @@ export default function CourseContent() {
   const [courses, setCourses] = useState<CourseZ[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect( () => {
-    fetch("/api/courses", {
+    fetch("/api/courses?timestamp=" + new Date().getTime(), {
       headers: {
         "Cache-Control": "no-cache", 
         Pragma: "no-cache",
