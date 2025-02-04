@@ -49,9 +49,9 @@ export default function CoursesPage() {
     setIsLoading(true);
     fetch("/api/courses?timestamp=" + new Date().getTime(), {
       headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate", 
-        Pragma: "no-cache", 
-        Expires: "0", 
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
       },
     })
       .then((res) => res.json())
@@ -63,7 +63,7 @@ export default function CoursesPage() {
         console.error("Error fetching courses:", error);
         setIsLoading(false);
       });
-  }, []);
+  }, []);  
 
   const semesterOptions = Array.from({ length: 8 }, (_, i) =>
     i == 0 ? "1st" : i == 1 ? "2nd" : i == 2 ? "3rd" : `${i + 1}th`

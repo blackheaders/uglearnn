@@ -1,13 +1,13 @@
 
 import { NextResponse } from "next/server";
-import { getCourses } from "@/db/courses";
+import db from '@/db';
 
 export async function GET() {
   try {
-    const courses = await getCourses();
+    const courses = await db.course.findMany();
     return NextResponse.json(courses, {
       headers: {
-        "Cache-Control": "no-store", // Disable all caching
+        "Cache-Control": "no-cache, no-store, must-revalidate", // stronger cache control
       },
     });
   } catch (error) {
