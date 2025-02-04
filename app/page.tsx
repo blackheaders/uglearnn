@@ -23,20 +23,19 @@ export default function Home() {
             offering customized solutions for 
             <span className="text-[#5C67E5]">UG courses</span>
           </h2>
-          <Button className="px-8 py-2 bg-[#5C67E5] hover:bg-[#4f5ed7] text-white text-lg rounded mx-auto">
+          {/* <Button className="px-8 py-2 bg-[#5C67E5] hover:bg-[#4f5ed7] text-white text-lg rounded mx-auto">
             Get Started
-          </Button>
+          </Button> */}
         </div>
       </div>
       <div className="bg-gradient-to-b from-[#ffff] to-[#4f5ed7]">
         <section className="container mx-auto px-4 py-16">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-[#5C67E5] mb-4">
-              UGlearn is democratizing UG Education making it accessible to all, join the revolution for a stress free and trusted content for UG education on India's first platform offering customized solutions for UG courses.
+            Enhance your learning with Uglearn's curated courses
             </h1>
-            <p className="text-xl text-black mb-8">
-              Enhance your learning with Uglearn's curated courses
-            </p>
+            {/* <p className="text-xl text-black mb-8">
+            </p> */}
             <Button className="bg-[#5C67E5] text-white hover:bg-[#4f5ed7]">
               <Link href="/courses">Explore Courses</Link>
             </Button>

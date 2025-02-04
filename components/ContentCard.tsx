@@ -1,5 +1,5 @@
 'use client';
-import { CheckCircle2, Play } from 'lucide-react';
+import { CheckCircle2, Play, Trash } from 'lucide-react';
 // import { Bookmark } from '@prisma/client';
 // import BookmarkButton from './bookmark/BookmarkButton';
 import { motion } from 'framer-motion';
@@ -9,9 +9,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from './ui/tooltip';
-import React from 'react';
+import React, { useState } from 'react';
 import CardComponent from './CardComponent';
 import VideoThumbnail from './videothumbnail';
+import { useRouter } from 'next/navigation';
+import { Button } from './ui/button';
 
 export const formatTime = (seconds: number): string => {
     const date = new Date(seconds * 1000);
@@ -43,6 +45,32 @@ export const ContentCard = ({
   uploadDate?: string;
   weeklyContentTitles?: string[];
 }) => {
+    const [isDeleting, setIsDeleting] = useState(false);
+    const router = useRouter();
+    const handleDelete = async (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (window.confirm('Are you sure you want to delete this course?')) {
+        try {
+          setIsDeleting(true);
+          const response = await fetch(`/api/admin/content`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: contentId }),
+          });
+          if (response.ok) {
+            router.refresh();
+          }
+        } catch (error) {
+          console.error('Error deleting course:', error);
+        } finally {
+          setIsDeleting(false);
+        }
+      }
+    };
+  
+
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
@@ -61,6 +89,18 @@ export const ContentCard = ({
                 <CheckCircle2 color="green" size={30} fill="lightgreen" />
               </div>
             )}
+              <Button className="absolute bottom-12 left-2 z-10 rounded-md p-2 font-semibold text-white" variant="default" onClick={handleDelete} disabled={isDeleting}>
+            <Trash className="w-4 h-4" />
+            {isDeleting && (
+              <motion.div
+                className="ml-2"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              >
+                ⌛
+              </motion.div>
+            )}
+          </Button>
             {type === 'video' && (
               <div className="absolute bottom-12 right-2 z-10 rounded-md p-2 font-semibold text-white">
                 <Play className="size-6" />
@@ -76,14 +116,6 @@ export const ContentCard = ({
                   }
                   type={type}
                 />
-                {!!videoProgressPercent && (
-                  <div className="absolute bottom-0 h-1 w-full bg-[#707071]">
-                    <div
-                      className="h-full bg-[#FF0101]"
-                      style={{ width: `${videoProgressPercent}%` }}
-                    />
-                  </div>
-                )}
               </div>
             )}
             {type === 'video' && (
@@ -92,20 +124,10 @@ export const ContentCard = ({
                   title={title}
                   contentId={contentId ?? 0}
                   imageUrl=""
-                  // imageUrl={
-                  //   'https://d2szwvl7yo497w.cloudfront.net/courseThumbnails/video.png'
-                  // }
                 />
-                {!!videoProgressPercent && (
-                  <div className="absolute bottom-0 h-1 w-full bg-[#707071]">
-                    <div
-                      className="h-full bg-[#5eff01]"
-                      style={{ width: `${videoProgressPercent}%` }}
-                    ></div>
-                  </div>
-                )}
               </div>
             )}
+
             <div className="flex items-center justify-between gap-4">
               <h3 className="w-full truncate text-xl font-bold capitalize tracking-tighter md:text-2xl">
                 {title}

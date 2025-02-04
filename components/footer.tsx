@@ -8,7 +8,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-xl font-bold mb-4">Uglearn</h3>
-            <p>Find and purchase courses for your university</p>
+            <p className="text-sm">
+              UGlearn is democratizing UG Education making it accessible to all,
+              join the revolution for a stress free and trusted content for UG
+              education on India's first platform offering customized solutions
+              for UG courses.
+            </p>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
@@ -37,8 +42,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="https://www.linkedin.com/company/uglearn-savvy"
-                target="_blank"
-              >
+                target="_blank">
                 <FaLinkedin className="text-white text-2xl hover:text-gray-400" />
               </Link>
             </div>

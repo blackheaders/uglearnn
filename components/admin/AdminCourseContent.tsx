@@ -64,7 +64,7 @@ export const AdminCourseContent = ({
               type={content.type}
               title={content.title}
               image={content.image || ''}
-              
+              contentId={content.id}
               onClick={() => {
                 router.push(`${updatedRoute}/${content.id}`);
               }}
