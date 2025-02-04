@@ -2,9 +2,11 @@
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
-  const { data: session } = useSession(); 
+  const { data: session } = useSession();
+  const router = useRouter();
   
   return (
     <header className="bg-white shadow-sm z-40">
@@ -34,6 +36,16 @@ export default function Header() {
         {session ? (
           <div className="flex items-center space-x-4">
             <span className="text-[#4f5ed7]">Hello, {session?.user?.name}</span>
+            {/* @ts-ignore */}
+            {session.user.role === "admin" && (
+               <Button
+               variant="outline"
+               className="bg-[#5C67E5] hover:bg-[#4f5ed7] text-white"
+               onClick={() => router.push("/admin")}
+             >
+                Admin
+                </Button>
+            )}
             <Button
               variant="outline"
               className="bg-[#5C67E5] hover:bg-[#4f5ed7] text-white"
