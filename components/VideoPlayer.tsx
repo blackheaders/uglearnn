@@ -29,7 +29,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, image }) => {
             setVideoSrc(mp4Url);
             setHasError(false);
           } else {
-            setHasError(true); // If the fetched URL is the same, assume failure
+            setHasError(true);
           }
         })
         .catch(() => setHasError(true))
@@ -52,8 +52,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, image }) => {
   return (
     <div className="relative w-full rounded-lg overflow-hidden">
       {isLoading ? (
-        <div className="flex items-center justify-center w-full h-64 bg-gray-800 text-white">
+        <div className="flex relative items-center justify-center w-full bg-gray-800 text-white">
           <img src={image} alt="Loading preview" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900"></div>
+          </div>
         </div>
       ) : hasError && isYouTube ? (
         // If an error occurs, display the YouTube iframe
