@@ -173,7 +173,7 @@ const App = () => {
                     )}
                     {viewType === 'video' && activeContent.videoUrl ? (
                       <>
-                      <VideoPlayer url={activeContent.videoUrl} />
+                      <VideoPlayer url={activeContent.videoUrl} image={activeContent.thumbnail} />
                       <Comments contentId={activeContent.id} />
                       </>
                     ) : viewType === 'pdf' && activeContent.pdfUrl ? (

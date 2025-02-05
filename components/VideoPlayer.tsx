@@ -3,45 +3,49 @@ import axios from 'axios';
 
 interface VideoPlayerProps {
   url: string;
+  image: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ url }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, image }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [videoSrc, setVideoSrc] = useState(url);
+  const [videoSrc, setVideoSrc] = useState<string | null>(url);
+  const [hasError, setHasError] = useState(false);
+
   const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
 
-  function getYouTubeVideoId(url:string) {
+  const getYouTubeVideoId = (url: string) => {
     const regex = /(?:youtu\.be\/|youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=))([a-zA-Z0-9_-]{11})/;
     const match = url.match(regex);
     return match ? match[1] : null;
-  }
+  };
+
   useEffect(() => {
     if (isYouTube) {
       setIsLoading(true);
-      fetchMp4Link(url).then((mp4Url) => {
-        setVideoSrc(mp4Url);
-        setIsLoading(false);
-      }).catch(() => setIsLoading(false));
+      fetchMp4Link(url)
+        .then((mp4Url) => {
+          if (mp4Url && mp4Url !== url) {
+            setVideoSrc(mp4Url);
+            setHasError(false);
+          } else {
+            setHasError(true); // If the fetched URL is the same, assume failure
+          }
+        })
+        .catch(() => setHasError(true))
+        .finally(() => setIsLoading(false));
     }
   }, [url]);
-  // useEffect(() => {
-  //   const video = videoRef.current;
-  //   if (video && onTimeUpdate) {
-  //     const handleTimeUpdate = () => onTimeUpdate(video.currentTime);
-  //     video.addEventListener('timeupdate', handleTimeUpdate);
-  //     return () => video.removeEventListener('timeupdate', handleTimeUpdate);
-  //   }
-  // }, [onTimeUpdate]);
 
   const fetchMp4Link = async (youtubeUrl: string): Promise<string> => {
     try {
-        const videoId = getYouTubeVideoId(youtubeUrl);
-      const response = await axios.get(`/api/ytube?videoId=${videoId}`);
+      const videoId = getYouTubeVideoId(youtubeUrl);
+      if (!videoId) throw new Error("Invalid YouTube URL");
+      
+      const response = await axios.get(`/api/ytube?videoId=${videoId}`, { timeout: 60000 });
       return response.data.mp4Url;
     } catch (error) {
-      console.error("Error fetching MP4 link:", error);
-      return url;
+      return youtubeUrl; // Return the original URL if fetching fails
     }
   };
 
@@ -49,8 +53,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url }) => {
     <div className="relative w-full rounded-lg overflow-hidden">
       {isLoading ? (
         <div className="flex items-center justify-center w-full h-64 bg-gray-800 text-white">
-          Loading video...
+          <img src={image} alt="Loading preview" className="w-full h-full object-cover" />
         </div>
+      ) : hasError && isYouTube ? (
+        // If an error occurs, display the YouTube iframe
+        <iframe
+        className="w-full aspect-video rounded-lg shadow-lg border border-gray-600"
+        src={`https://www.youtube.com/embed/${getYouTubeVideoId(url)}?autoplay=1&modestbranding=1&rel=0&showinfo=0&disablekb=1&iv_load_policy=3`}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        loading="lazy"
+      ></iframe>      
       ) : (
         <video
           ref={videoRef}
@@ -58,7 +73,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url }) => {
           controls
           controlsList="nodownload"
           playsInline
-          src={videoSrc}
+          src={videoSrc ?? url}
         >
           Your browser does not support the video tag.
         </video>
