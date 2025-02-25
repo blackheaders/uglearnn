@@ -50,11 +50,11 @@ export default function ContactPage() {
     }
   }
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-[#5C67E5] mb-8">Contact Us</h1>
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-[#5C67E5] mb-1">Name</label>
+    <div className="container mx-auto px-6 py-12 flex flex-col items-center">
+      <h1 className="text-4xl font-bold text-[#5C67E5] mb-6 animate-fade-in">Contact Us</h1>
+      <form onSubmit={handleSubmit} className="w-full max-w-lg bg-white shadow-lg rounded-2xl p-6 space-y-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
           <Input
             type="text"
             id="name"
@@ -63,10 +63,12 @@ export default function ContactPage() {
             onChange={handleChange}
             required
             disabled={isLoading}
+            placeholder="Enter your name"
+            className="rounded-lg border-gray-300 focus:ring-[#5C67E5] focus:border-[#5C67E5]"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-[#5C67E5] mb-1">Email</label>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <Input
             type="email"
             id="email"
@@ -75,10 +77,12 @@ export default function ContactPage() {
             onChange={handleChange}
             required
             disabled={isLoading}
+            placeholder="Enter your email"
+            className="rounded-lg border-gray-300 focus:ring-[#5C67E5] focus:border-[#5C67E5]"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="subject" className="block text-sm font-medium text-[#5C67E5] mb-1">Subject</label>
+        <div>
+          <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
           <Input
             type="text"
             id="subject"
@@ -87,10 +91,12 @@ export default function ContactPage() {
             onChange={handleChange}
             required
             disabled={isLoading}
+            placeholder="Enter subject"
+            className="rounded-lg border-gray-300 focus:ring-[#5C67E5] focus:border-[#5C67E5]"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="message" className="block text-sm font-medium text-[#5C67E5] mb-1">Message</label>
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
           <Textarea
             id="message"
             name="message"
@@ -98,9 +104,11 @@ export default function ContactPage() {
             onChange={handleChange}
             required
             disabled={isLoading}
+            placeholder="Enter your message"
+            className="rounded-lg border-gray-300 focus:ring-[#5C67E5] focus:border-[#5C67E5]"
           />
         </div>
-        <Button type="submit" className="w-full bg-[#5C67E5] text-white hover:bg-[#4f5ed7]" disabled={isLoading}>
+        <Button type="submit" className="w-full bg-[#5C67E5] text-white hover:bg-[#4f5ed7] transition duration-200 rounded-lg py-2 text-lg font-medium" disabled={isLoading}>
           {isLoading ? "Sending..." : "Send Message"}
         </Button>
       </form>

@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Search, School, BookOpen, Calendar, FileVideo } from 'lucide-react';
 
 const MotionCard = motion(Card);
 
@@ -73,7 +74,8 @@ export default function CoursesPage() {
     return semester
       .replace(/[^0-9a-zA-Z, ]/g, "")
       .replace(/\s+/g, " ")
-      .trim(); 
+      .trim()
+      .toLowerCase(); 
   };
 
   const splitSemesters = (semesterString: string) => {
@@ -83,9 +85,9 @@ export default function CoursesPage() {
   };
   const filteredCourses = courses.filter((course) => {
     const matchesUniversity =
-      !selectedUniversity || course.university === selectedUniversity;
+      !selectedUniversity || course.university.toLowerCase().replace(/\s+/g, '') === selectedUniversity.toLowerCase().replace(/\s+/g, '');
     const matchesCategory =
-      !selectedCategory || course.program === selectedCategory;
+      !selectedCategory || course.program.toLowerCase().replace(/\s+/g, '') === selectedCategory.toLowerCase().replace(/\s+/g, '');
 
     const matchesSemester =
       !selectedSemester ||
@@ -107,71 +109,86 @@ export default function CoursesPage() {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Available Courses</h1>
-        <Input
-          type="search"
-          placeholder="Search courses..."
-          className="w-[300px]"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="container mx-auto px-4 py-12 min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
+        <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#5C67E5] to-[#4f5ed7] flex items-center gap-3">
+          <BookOpen className="w-10 h-10" />
+          Available Courses
+        </h1>
+        <div className="w-full md:w-auto flex flex-col lg:flex-row gap-4 items-end lg:ml-auto">
+          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+            <Select
+              onValueChange={setSelectedUniversity}
+              value={selectedUniversity}>
+              <SelectTrigger className="w-full sm:w-[180px] shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2">
+                <School className="w-4 h-4" />
+                <SelectValue placeholder="Select University" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from(
+                  new Set(courses.map((course) => course.university))
+                ).map((university) => (
+                  <SelectItem key={university} value={university}>
+                    {university}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-      <div className="mb-8 flex flex-col md:flex-row gap-4">
-        <Select
-          onValueChange={setSelectedUniversity}
-          value={selectedUniversity}>
-          <SelectTrigger className="w-full md:w-[200px]">
-            <SelectValue placeholder="Select College/University" />
-          </SelectTrigger>
-          <SelectContent>
-            {Array.from(
-              new Set(courses.map((course) => course.university))
-            ).map((university) => (
-              <SelectItem key={university} value={university}>
-                {university}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+            <Select onValueChange={setSelectedCategory} value={selectedCategory}>
+              <SelectTrigger className="w-full sm:w-[180px] shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2">
+                <SelectValue placeholder="Select Program" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from(new Set(courses.map((course) => course.program))).map(
+                  (program) => (
+                    <SelectItem key={program} value={program}>
+                      {program}
+                    </SelectItem>
+                  )
+                )}
+              </SelectContent>
+            </Select>
 
-        <Select onValueChange={setSelectedCategory} value={selectedCategory}>
-          <SelectTrigger className="w-full md:w-[200px]">
-            <SelectValue placeholder="Select Category" />
-          </SelectTrigger>
-          <SelectContent>
-            {Array.from(new Set(courses.map((course) => course.program))).map(
-              (program) => (
-                <SelectItem key={program} value={program}>
-                  {program}
-                </SelectItem>
-              )
-            )}
-          </SelectContent>
-        </Select>
+            <Select onValueChange={setSelectedSemester} value={selectedSemester}>
+              <SelectTrigger className="w-full sm:w-[180px] shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                <SelectValue placeholder="Select Semester" />
+              </SelectTrigger>
+              <SelectContent>
+                {semesterOptions.map((semester) => (
+                  <SelectItem key={semester} value={semester}>
+                    {semester}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-        <Select onValueChange={setSelectedSemester} value={selectedSemester}>
-          <SelectTrigger className="w-full md:w-[200px]">
-            <SelectValue placeholder="Select Semester" />
-          </SelectTrigger>
-          <SelectContent>
-            {semesterOptions.map((semester) => (
-              <SelectItem key={semester} value={semester}>
-                {semester}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <div className="relative w-full sm:w-[250px]">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              type="search"
+              placeholder="Search courses..."
+              className="pl-10 w-full shadow-sm hover:shadow-md transition-shadow duration-200"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
       </div>
 
       {isLoading ? (
         <div className="flex justify-center items-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#5C67E5]"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#5C67E5]"></div>
+        </div>
+      ) : filteredCourses.length === 0 ? (
+        <div className="flex flex-col justify-center items-center min-h-[400px] gap-4">
+          <Search className="w-16 h-16 text-gray-400" />
+          <p className="text-2xl text-gray-500 font-light">No courses found</p>
         </div>
       ) : (
         <motion.div
@@ -181,7 +198,7 @@ export default function CoursesPage() {
             show: {
               opacity: 1,
               transition: {
-                staggerChildren: 0.1,
+                staggerChildren: 0.15,
               },
             },
           }}
@@ -191,22 +208,26 @@ export default function CoursesPage() {
             <MotionCard
               key={course.title}
               variants={{
-                hidden: { opacity: 0, y: 20 },
+                hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0 },
               }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}>
+              whileHover={{ scale: 1.03, translateY: -5 }}
+              whileTap={{ scale: 0.98 }}
+              className="backdrop-blur-sm bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
-                <CardTitle>{course.title}</CardTitle>
-                <CardDescription>
-                  {course.university} - {course.program} - Semester{" "}
-                  {course.semester}
+                <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                  <FileVideo className="w-5 h-5 text-[#5C67E5]" />
+                  {course.title}
+                </CardTitle>
+                <CardDescription className="text-sm text-gray-600 flex items-center gap-2">
+                  <School className="w-4 h-4" />
+                  {course.university} • {course.program} • Semester {course.semester}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 {course.videoUrl ? (
                   <video
-                    className="w-full h-40 object-cover mb-4"
+                    className="w-full h-48 object-cover mb-6 rounded-lg shadow-md"
                     autoPlay
                     loop
                     muted>
@@ -215,29 +236,28 @@ export default function CoursesPage() {
                   </video>
                 ) : (
                   <img
-                    className="w-full h-40 object-cover mb-4"
+                    className="w-full h-48 object-cover mb-6 rounded-lg shadow-md"
                     src={course.imageUrl}
                     alt=""
                   />
                 )}
-
-                <p>{course.description}</p>
+                <p className="text-gray-700 leading-relaxed">{course.description}</p>
               </CardContent>
-              <CardFooter className="flex justify-between items-center">
+              <CardFooter className="flex justify-between items-center pt-4 border-t">
                 {course.price === 0 ? (
                   <span className="text-lg font-bold text-green-500">Free</span>
                 ) : (
-                  <span className="text-lg font-bold">Rs. {course.price}</span>
+                  <span className="text-lg font-bold text-[#5C67E5]">Rs. {course.price}</span>
                 )}
                 {course.gdlink ? (
                   <Link href={`${course.gdlink}`}>
-                    <Button className="bg-[#5C67E5] text-white hover:bg-[#4f5ed7]">
+                    <Button className="bg-[#5C67E5] text-white hover:bg-[#4f5ed7] shadow-md hover:shadow-lg transition-all duration-300 px-6 flex items-center gap-2">
                       Drive Course
                     </Button>
                   </Link>
                 ) : (
                   <Link href={`/courses/${course.id}`}>
-                    <Button className="bg-[#5C67E5] text-white hover:bg-[#4f5ed7]">
+                    <Button className="bg-[#5C67E5] text-white hover:bg-[#4f5ed7] shadow-md hover:shadow-lg transition-all duration-300 px-6 flex items-center gap-2">
                       View Course
                     </Button>
                   </Link>

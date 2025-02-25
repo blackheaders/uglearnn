@@ -17,14 +17,15 @@ export async function POST(req: Request) {
       where: { userId },
     });
 
-    // Add new courses for the user
-    await prisma.purchase.createMany({
-      data: courseIds.map((courseId) => ({
-        userId,
-        courseId,
-        status: "done",
-      })),
-    });
+    if (courseIds.length > 0) {
+      await prisma.purchase.createMany({
+        data: courseIds.map((courseId) => ({
+          userId,
+          courseId,
+          status: "done",
+        })),
+      });
+    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
