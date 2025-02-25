@@ -9,7 +9,7 @@ import { Toaster } from "sonner"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Uglearn - University Course Platform",
+  title: "UGLearn - University Course Platform",
   description: "Find and purchase courses for your university",
 }
 

@@ -21,6 +21,8 @@ model User {
   sessions      Session[]
 
   Comment Comment[]
+
+  Purchase Purchase[]
 }
 
 model Session {
@@ -59,6 +61,8 @@ model Course {
   content     Content[] @relation("CourseContent")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  Purchase Purchase[]
 }
 
 model Content {
@@ -109,4 +113,16 @@ model Vote {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   Comment     Comment  @relation(fields: [commentId], references: [id])
+}
+
+model Purchase {
+  id          String   @id @default(cuid()) @map("_id")
+  userId      String
+  courseId    String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  course      Course   @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
 }

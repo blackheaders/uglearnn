@@ -20,7 +20,7 @@ export default function LoginPage() {
     e.preventDefault()
     toast({
       title: "Login Successful",
-      description: "Welcome back to Uglearn!",
+      description: "Welcome back to UGLearn!",
     })
     setFormData({ email: "", password: "" })
   }

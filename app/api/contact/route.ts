@@ -24,7 +24,7 @@ export async function POST(req: Request) {
           <h1>Thank you for your message!</h1>
           <p>We will get back to you soon.</p>
           <p>Best Regards,</p>
-          <p>The UgLearn team</p>
+          <p>The UGLearn team</p>
         `,
         });
         return new Response(JSON.stringify({ message: 'success' }), {

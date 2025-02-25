@@ -32,7 +32,7 @@ export default function Home() {
         <section className="container mx-auto px-4 py-16">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-[#5C67E5] mb-4">
-            Enhance your learning with Uglearn's curated courses
+            Enhance your learning with UGLearn's curated courses
             </h1>
             {/* <p className="text-xl text-black mb-8">
             </p> */}

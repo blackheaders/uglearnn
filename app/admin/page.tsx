@@ -93,7 +93,7 @@ export default function AdminPage() {
       exploreText: 'Manage comments!',
     },
     {
-      href: '/admin/will-do',
+      href: '/admin/users',
       icon: Users,
       title: 'User Management',
       description: 'Manage user accounts and permissions',

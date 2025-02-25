@@ -184,12 +184,9 @@ const Signin = () => {
             Welcome to{' '}
             <br/>
             <span className="bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text pr-1 font-black tracking-tighter text-transparent">
-              UG Learns
+              UG Learn
             </span>
           </h2>
-          <p className="text-lg font-medium tracking-tighter text-primary/75 md:text-xl">
-            Log in to access paid content!
-          </p>
         </div>
         <div className="flex flex-col gap-8">
           <div className="grid w-full items-center gap-4">

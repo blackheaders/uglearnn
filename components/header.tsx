@@ -12,7 +12,7 @@ export default function Header() {
     <header className="bg-white shadow-sm z-40">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center bg-white">
         <Link href="/" className="text-2xl font-bold text-[#4f5ed7]">
-          Uglearn
+          UGLearn
         </Link>
         <div className="hidden md:flex space-x-4">
           <Link href="/" className=" hover:text-[#4f5ed7]">
