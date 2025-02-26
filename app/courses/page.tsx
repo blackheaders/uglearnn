@@ -255,6 +255,12 @@ export default function CoursesPage() {
                       Drive Course
                     </Button>
                   </Link>
+                ) : course.price > 0 ? (
+                  <Link href={`/buy-course?id=${course.id}`}>
+                    <Button className="bg-[#5C67E5] text-white hover:bg-[#4f5ed7] shadow-md hover:shadow-lg transition-all duration-300 px-6 flex items-center gap-2">
+                      Buy Now
+                    </Button>
+                  </Link>
                 ) : (
                   <Link href={`/courses/${course.id}`}>
                     <Button className="bg-[#5C67E5] text-white hover:bg-[#4f5ed7] shadow-md hover:shadow-lg transition-all duration-300 px-6 flex items-center gap-2">

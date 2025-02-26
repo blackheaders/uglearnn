@@ -8,6 +8,7 @@ import PDFViewer from '@/components/PDFViewer';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import Comments from '@/components/Comments';
+import { useSession } from 'next-auth/react';
 
 async function fetchCourseData(courseId: string) {
   try {
@@ -38,42 +39,65 @@ const App = () => {
   const [sampleCourse, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-
+  const [isUserHaveCourse, setIsUserHaveCourse] = useState(false);
+  const { data: session } = useSession();
+  const router = useRouter();
   const courseId = useParams().id;
 
   useEffect(() => {
     async function loadCourse() {
       if (typeof courseId === 'string') {
         const data = await fetchCourseData(courseId);
-        if (data) {
-          setCourse(data);
-          console.log(data);
-        } else {
-          setError('Failed to load course');
-        }
+        if (data) setCourse(data);
+        else setError('Failed to load course');
       } else {
         setError('Invalid course ID');
       }
       setLoading(false);
     }
-
     loadCourse();
   }, [courseId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (sampleCourse && sampleCourse.price > 0 && session) {
+      // @ts-ignore
+      const userId = session?.user?.id;
+      const checkUserHasCourse = async () => {
+        try {
+          const response = await fetch('/api/user/havecourse', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ courseId: sampleCourse.id, userId }),
+          });
+          if (!response.ok) throw new Error('Failed to check course access');
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error('Error checking course access:', error);
+          return false;
+        }
+      };
+      
+      checkUserHasCourse().then(({hasCourse}) => {
+        setIsUserHaveCourse(hasCourse);
+        if (!hasCourse) router.push('/buy-course/?id=' + sampleCourse.id);
+      });
+    }
+  }, [sampleCourse, session]);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!sampleCourse) {
-    return <div>No course data available</div>;
-  }
+  if (loading) return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#5C67E5]"></div>
+    </div>
+  );
+  if (error) return <div className="flex items-center justify-center h-screen text-red-500 text-xl">{error}</div>;
+  if (!sampleCourse) return <div className="flex items-center justify-center h-screen text-gray-500 text-xl">No course data available</div>;
+  if (sampleCourse.price > 0 && !isUserHaveCourse) return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="animate-pulse text-[#5C67E5] text-xl">Checking course access...</div>
+    </div>
+  );
 
   const handleContentSelect = (content: Content) => {
     setActiveContent(content);
@@ -100,7 +124,7 @@ const App = () => {
             onClick={() => setIsSidebarOpen(false)}
           />
           {/* Sidebar content */}
-          <div className="relative w-80 h-full max-w-[80vw] bg-white shadow-xl lg:shadow-none">
+          <div className="relative w-80 h-full bg-white shadow-xl lg:shadow-none">
             <Sidebar
               content={sampleCourse.content}
               activeContent={activeContent}

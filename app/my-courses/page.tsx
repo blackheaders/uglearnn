@@ -1,100 +1,95 @@
-"use client"
+  'use client'
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+  import { useSession } from "next-auth/react"
+  import { useEffect, useState } from "react"
+  import Link from "next/link"
+  import Image from "next/image"
 
-// This would typically come from an API call to the backend
-const purchasedCourses = [
-  {
-    id: 1,
-    title: "Management Principles",
-    description: "Learn the fundamentals of management and leadership",
-    university: "Example University",
-    category: "BBA",
-    progress: 25,
-  },
-  {
-    id: 2,
-    title: "Data Structures and Algorithms",
-    description: "Master the core concepts of computer science",
-    university: "Tech Institute",
-    category: "BTech",
-    progress: 50,
-  },
-]
+  export default function PurchasedCourses() {
+    const { data: session } = useSession()
+    const [courses, setCourses] = useState([])
+    const [loading, setLoading] = useState(true)
 
-const MotionCard = motion(Card)
+    useEffect(() => {
+      const fetchPurchasedCourses = async () => {
+        try {
+          const response = await fetch('/api/purchases', {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+          const data = await response.json()
+          setCourses(data)
+        } catch (error) {
+          console.error('Error fetching courses:', error)
+        } finally {
+          setLoading(false)
+        }
+      }
 
-export default function MyCourses() {
-  const [courses, setCourses] = useState(purchasedCourses)
+      if (session?.user) {
+        fetchPurchasedCourses()
+      }
+    }, [session])
 
-  useEffect(() => {
-    // In a real application, you would fetch the user's purchased courses here
-    // For now, we'll use the mock data
-  }, [])
+    if (!session) {
+      return (
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-50 to-indigo-50">
+          <p className="text-xl font-semibold text-gray-800 bg-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">Please login to view your courses</p>
+        </div>
+      )
+    }
 
-  return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8"
-    >
-      <h1 className="text-3xl font-bold text-[#6C462E] mb-8">My Courses</h1>
-      <motion.div 
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        variants={{
-          hidden: { opacity: 0 },
-          show: {
-            opacity: 1,
-            transition: {
-              staggerChildren: 0.1
-            }
-          }
-        }}
-        initial="hidden"
-        animate="show"
-      >
-        {courses.map((course) => (
-          <MotionCard 
-            key={course.id}
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              show: { opacity: 1, y: 0 }
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <CardHeader>
-              <CardTitle>{course.title}</CardTitle>
-              <CardDescription>{course.university} - {course.category}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>{course.description}</p>
-              <div className="mt-4">
-                <div className="text-sm font-medium">Progress: {course.progress}%</div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-2">
-                  <div 
-                    className="bg-[#F6BD6A] h-2.5 rounded-full" 
-                    style={{ width: `${course.progress}%` }}
-                  ></div>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Link href={`/courses/${course.id}`}>
-                <Button className="w-full bg-[#F6BD6A] text-white hover:bg-[#6C462E]">
-                  Continue Learning
-                </Button>
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-50 to-indigo-50">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="min-h-screen bg-gradient-to-r from-blue-50 to-indigo-50 py-12">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold mb-8 text-gray-800 text-center">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">My Courses</span>
+          </h1>
+      
+          {courses.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-xl shadow-lg max-w-2xl mx-auto">
+              <p className="text-2xl text-gray-700 mb-6">You haven't purchased any courses yet</p>
+              <Link href="/courses" className="inline-block px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full hover:from-blue-600 hover:to-indigo-700 transform hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg">
+                Browse Available Courses
               </Link>
-            </CardFooter>
-          </MotionCard>
-        ))}
-      </motion.div>
-    </motion.div>
-  )
-}
-
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {courses.map((course: any) => (
+                <div key={course.id} className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300">
+                  <div className="relative h-56">
+                    <Image
+                      src={course.imageUrl || '/placeholder-course.jpg'}
+                      alt={course.title}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  </div>
+                  <div className="p-6">
+                    <h2 className="text-2xl font-bold mb-3 text-gray-800">{course.title}</h2>
+                    <p className="text-gray-600 mb-6 line-clamp-2">{course.description}</p>
+                    <Link
+                      href={`/courses/${course.id}`}
+                      className="inline-block w-full text-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transform hover:shadow-lg transition-all duration-300"
+                    >
+                      Continue Learning
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
