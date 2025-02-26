@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/db";
+import { sendAdminNotification } from "@/lib/email";
 
 export async function GET(req: Request) {
   try {
@@ -63,6 +64,8 @@ export async function POST(req: Request) {
       course: true,
     },
   });
+
+  await sendAdminNotification(notification);
 
   return NextResponse.json({ notification });
 }
