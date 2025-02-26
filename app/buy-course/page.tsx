@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Course } from "@/types/types";
 import { useSession } from "next-auth/react";
-import { StripeCheckout } from "@/components/stripe-checkout";
+// import { StripeCheckout } from "@/components/stripe-checkout";
 import Image from "next/image";
 import { FaUniversity, FaBookOpen, FaCalendarAlt, FaShoppingCart, FaSpinner } from 'react-icons/fa';
 
