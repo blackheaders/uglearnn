@@ -1,6 +1,7 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+  Bell,
   FileText,
   Flag,
   LucideIcon,
@@ -86,11 +87,11 @@ export default function AdminPage() {
     //   exploreText: 'Configure now!',
     // },
     {
-      href: '/admin/will-do',
-      icon: MessageCircle,
-      title: 'Comments Management',
-      description: 'Moderate and manage user comments',
-      exploreText: 'Manage comments!',
+      href: '/admin/notifications',
+      icon: Bell,
+      title: 'Notifications',
+      description: 'Manage system notifications and alerts',
+      exploreText: 'Manage notifications!',
     },
     {
       href: '/admin/users',

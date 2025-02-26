@@ -264,7 +264,7 @@ export default function CoursesPage() {
                 ) : (
                   <Link href={`/courses/${course.id}`}>
                     <Button className="bg-[#5C67E5] text-white hover:bg-[#4f5ed7] shadow-md hover:shadow-lg transition-all duration-300 px-6 flex items-center gap-2">
-                      View Course
+                      Enroll Now
                     </Button>
                   </Link>
                 )}
