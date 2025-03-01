@@ -24,15 +24,20 @@ export function SwiperComponent() {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper w-full h-full"
       >
-        <SwiperSlide className="text-center text-md flex justify-center items-center">
-          <Image
-            height={500}
-            width={500}
-            src="https://res.cloudinary.com/dlqooiewh/image/upload/v1738330481/uploads/odis8drmnbkg7cdqwijv.jpg"
-            alt=""
-            className="h-full w-full object-fill max-md:object-cover"
-          />
-        </SwiperSlide>
+        <SwiperSlide className="text-center text-md  w-full">
+        <picture>
+  
+    <source media="(max-width: 800px)" srcSet="/finalcrsl.png" />
+   
+    <source media="(min-width: 801px)" srcSet="/ugl90.png" />
+   
+    <img
+      src="/ugl90.png"
+      alt=""
+      className="h-full w-full object-fit"
+    />
+  </picture>
+</SwiperSlide>
       </Swiper>
     </>
   );

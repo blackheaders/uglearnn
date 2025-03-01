@@ -13,7 +13,7 @@ import { SwiperComponent, TeamSwiper } from "@/components/Swiper";
 export default function Home() {
   return (
     <div className=" ">
-      <div className="h-[35vh] max-md:h-[20vh] w-full">
+      <div className="h-[35vh] max-sm:h-[18vh] w-full max-[1400px]:h-[25vh]">
         <SwiperComponent />
       </div>
       <div className="] max-h-[45vh] px-2 sm:px-8 md:px-20 py-8 max-md:py-4 flex  justify-center">

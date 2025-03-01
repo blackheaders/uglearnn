@@ -167,7 +167,8 @@ const Signin = () => {
   }, []);
 
   return (
-    <section className="wrapper relative flex min-h-screen items-center justify-center overflow-hidden antialiased">
+    <section className="wrapper relative flex min-h-screen items-center justify-center overflow-hidden antialiased bg-[url('/OIP.jpg')] bg-cover ">
+      
       <motion.div
         initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -177,7 +178,7 @@ const Signin = () => {
           type: 'spring',
           damping: 10,
         }}
-        className="flex w-full flex-col justify-between gap-12 rounded-2xl bg-primary/5 p-8 sm:max-w-[26rem]"
+        className="flex w-full flex-col justify-between gap-12 rounded-2xl bg-white/20 p-8 sm:max-w-[26rem] z-10 backdrop-blur-md border border-white/10 shadow-lg"
       >
         <div className="flex flex-col text-center">
           <h2 className="text-3xl font-semibold tracking-tighter xl:text-4xl">
@@ -193,7 +194,7 @@ const Signin = () => {
             <div className="relative flex flex-col gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
-                className="focus:ring-none border-none bg-primary/5 focus:outline-none"
+                className="focus:ring-none border-none bg-white focus:outline-none"
                 name="email"
                 id="email"
                 placeholder="name@email.com"
@@ -239,7 +240,7 @@ const Signin = () => {
               <Label>Password</Label>
               <div className="flex">
                 <Input
-                  className="focus:ring-none border-none bg-primary/5 focus:outline-none"
+                  className="focus:ring-none border-none bg-white focus:outline-none"
                   name="password"
                   type={isPasswordVisible ? 'text' : 'password'}
                   id="password"
