@@ -16,6 +16,10 @@ export default function Home() {
       <div className="h-[35vh] max-sm:h-[18vh] w-full max-[1400px]:h-[25vh]">
         <SwiperComponent />
       </div>
+      <div className="h-[40vh] max-sm:h-[30vh] w-full p-4 md:p-8 hover:cursor-grab">
+
+    <TeamSwiper></TeamSwiper>
+</div>
       <div className="] max-h-[45vh] px-2 sm:px-8 md:px-20 py-8 max-md:py-4 flex  justify-center">
         <div className=" max-w-screen-lg flex flex-col justify-around gap-8 h-full w-full">
           <h2 className="text-2xl sm:text-3xl md:text-4xl text-center font-semibold leading-[1.8] max-sm:leading-normal">
@@ -91,10 +95,7 @@ export default function Home() {
             </Card>
           </div>
         </section>
-<div className="h-[40vh] max-sm:h-[30vh] w-full p-4 md:p-8 hover:cursor-grab">
 
-    <TeamSwiper></TeamSwiper>
-</div>
       </div>
     </div>
   );
