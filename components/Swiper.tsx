@@ -27,9 +27,9 @@ export function SwiperComponent() {
         <SwiperSlide className="text-center text-md  w-full">
         <picture>
   
-    <source media="(max-width: 800px)" srcSet="/finalcrsl.png" />
+    <source media="(max-width: 1000px)" srcSet="/finalcrsl.png" />
    
-    <source media="(min-width: 801px)" srcSet="/ugl90.png" />
+    <source media="(min-width: 1001px)" srcSet="/ugl90.png" />
    
     <img
       src="/ugl90.png"

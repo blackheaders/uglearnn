@@ -79,8 +79,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#5C67E5]/10 to-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+    <div className="min-h-screen flex items-center justify-center  py-8 px-4 sm:px-6 lg:px-8 bg-[url('/bg_img.png')] bg-cover">
+      <div className="max-w-lg w-full space-y-8 border-white/10 border bg-white/20 p-8 rounded-2xl shadow-xl backdrop-blur-md">
         <div>
           <h1 className="text-4xl font-bold text-center text-[#5C67E5] mb-4">Create Account</h1>
           <p className="text-center text-gray-600 mb-8">Join our learning community today</p>

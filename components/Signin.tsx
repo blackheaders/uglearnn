@@ -167,7 +167,7 @@ const Signin = () => {
   }, []);
 
   return (
-    <section className="wrapper relative flex min-h-screen items-center justify-center overflow-hidden antialiased bg-[url('/OIP.jpg')] bg-cover ">
+    <section className="wrapper relative flex min-h-screen items-center justify-center overflow-hidden antialiased bg-[url('/bg_img.png')] bg-cover ">
       
       <motion.div
         initial={{ y: -40, opacity: 0 }}
@@ -181,7 +181,7 @@ const Signin = () => {
         className="flex w-full flex-col justify-between gap-12 rounded-2xl bg-white/20 p-8 sm:max-w-[26rem] z-10 backdrop-blur-md border border-white/10 shadow-lg"
       >
         <div className="flex flex-col text-center">
-          <h2 className="text-3xl font-semibold tracking-tighter xl:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tighter xl:text-4xl text-white">
             Welcome to{' '}
             <br/>
             <span className="bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text pr-1 font-black tracking-tighter text-transparent">
@@ -192,7 +192,7 @@ const Signin = () => {
         <div className="flex flex-col gap-8">
           <div className="grid w-full items-center gap-4">
             <div className="relative flex flex-col gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className='text-white'>Email</Label>
               <Input
                 className="focus:ring-none border-none bg-white focus:outline-none"
                 name="email"
@@ -237,7 +237,7 @@ const Signin = () => {
               )}
             </div>
             <div className="relative flex flex-col gap-2">
-              <Label>Password</Label>
+              <Label className='text-white'>Password</Label>
               <div className="flex">
                 <Input
                   className="focus:ring-none border-none bg-white focus:outline-none"
@@ -315,7 +315,7 @@ const Signin = () => {
           >
             Login
           </Button>
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-white">
             Don't have an account? <a href="/signup" className="text-blue-600 hover:underline">Create an account</a>
           </p>
         </div>

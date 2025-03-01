@@ -13,7 +13,7 @@ import { SwiperComponent, TeamSwiper } from "@/components/Swiper";
 export default function Home() {
   return (
     <div className=" ">
-      <div className="h-[35vh] max-sm:h-[18vh] w-full max-[1400px]:h-[25vh]">
+      <div className="h-[42vh] max-sm:h-[20vh] w-full max-[1000px]:h-[30vh]">
         <SwiperComponent />
       </div>
       <div className="h-[40vh] max-sm:h-[30vh] w-full p-4 md:p-8 hover:cursor-grab">

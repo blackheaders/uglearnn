@@ -50,11 +50,11 @@ export default function ContactPage() {
     }
   }
   return (
-    <div className="container mx-auto px-6 py-12 flex flex-col items-center">
+    <div className="container mx-auto px-6 py-12 flex flex-col items-center bg-[url('/bg_img.png')] bg-cover">
       <h1 className="text-4xl font-bold text-[#5C67E5] mb-6 animate-fade-in">Contact Us</h1>
-      <form onSubmit={handleSubmit} className="w-full max-w-lg bg-white shadow-lg rounded-2xl p-6 space-y-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-lg bg-white/30 backdrop-blur-md shadow-lg rounded-2xl p-6 space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <label htmlFor="name" className="block text-sm font-medium text-black mb-1">Name</label>
           <Input
             type="text"
             id="name"
@@ -68,7 +68,7 @@ export default function ContactPage() {
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <label htmlFor="email" className="block text-sm font-medium text-black mb-1">Email</label>
           <Input
             type="email"
             id="email"
@@ -82,7 +82,7 @@ export default function ContactPage() {
           />
         </div>
         <div>
-          <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+          <label htmlFor="subject" className="block text-sm font-medium text-black mb-1">Subject</label>
           <Input
             type="text"
             id="subject"
@@ -96,7 +96,7 @@ export default function ContactPage() {
           />
         </div>
         <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+          <label htmlFor="message" className="block text-sm font-medium text-black mb-1">Message</label>
           <Textarea
             id="message"
             name="message"
